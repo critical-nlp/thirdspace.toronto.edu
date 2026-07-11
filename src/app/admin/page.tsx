@@ -1,11 +1,31 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { Lock, Mail, ShieldCheck, Sparkles } from "lucide-react";
+import {
+  Lock,
+  Mail,
+  ShieldCheck,
+  Sparkles,
+  Layout,
+  Layers,
+  MapPin,
+  Compass,
+  FileCode,
+  LogOut,
+  Download,
+  UploadCloud,
+  Loader2,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
+  Settings,
+  Database,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import {
   ADMIN_EMAIL,
   ADMIN_PASSWORD,
@@ -124,68 +144,76 @@ export default function AdminPage() {
 
   if (!checked) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <p className="text-sm text-muted-foreground">Loading…</p>
+      <div className="flex min-h-screen items-center justify-center bg-background relative overflow-hidden">
+        {/* Technical drafting grid background */}
+        <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px]" />
+        <div className="relative flex flex-col items-center gap-2">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">Verifying Authentication...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="grid min-h-screen w-full grid-cols-1 bg-background text-foreground lg:grid-cols-2">
-      {/* Brand panel */}
-      <aside className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-background p-10 lg:flex">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,oklch(0.85_0.15_var(--brand-hue)/0.18),transparent_60%),radial-gradient(circle_at_bottom_left,oklch(0.85_0.16_75/0.20),transparent_55%)]"
+    <div className="min-h-screen bg-background text-foreground font-sans relative antialiased selection:bg-accent/35">
+      {session ? (
+        <SignedInView
+          email={session.email}
+          onSignOut={() => signOut()}
         />
-        <div className="relative flex items-center gap-2 text-foreground">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-            <Sparkles className="h-4 w-4" />
-          </div>
-          <span className="text-lg font-semibold tracking-tight">
-            Thirdspace
-          </span>
+      ) : (
+        <div className="grid min-h-screen w-full grid-cols-1 lg:grid-cols-12 relative">
+          {/* Drafting grid backdrop */}
+          <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
+
+          {/* Left Brand Panel */}
+          <aside className="relative lg:col-span-5 hidden flex-col justify-between overflow-hidden border-r border-border bg-card p-12 lg:flex z-10">
+            {/* Structural top border mark */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-primary" />
+            
+            <div className="relative flex items-center gap-2 text-foreground">
+              <div className="flex h-9 w-9 items-center justify-center rounded border-2 border-primary bg-background font-mono text-sm font-bold shadow-sm">
+                TS
+              </div>
+              <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
+                Studio Workspace
+              </span>
+            </div>
+
+            <div className="relative flex flex-col gap-6 max-w-sm">
+              <div className="w-fit flex items-center gap-1.5 rounded border border-border bg-background px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                DRAFT.ENV
+              </div>
+              <h1 className="text-3xl font-bold tracking-tight text-foreground font-serif leading-tight">
+                Architectural CMS for Thirdspace.
+              </h1>
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                This environment manages content layouts, coordinates, and team modules across UofT campus networks. Commits are pushed directly to main production trees via securely signed local keys.
+              </p>
+            </div>
+
+            <div className="relative space-y-1">
+              <p className="text-[10px] font-mono text-muted-foreground">
+                REF: {new Date().getFullYear()}-TS-UofT
+              </p>
+              <p className="text-[10px] font-mono text-muted-foreground">
+                SYSTEM PORT: SECURE_INLINE_RESTRICTED
+              </p>
+            </div>
+          </aside>
+
+          {/* Right Form Panel */}
+          <main className="col-span-1 lg:col-span-7 flex items-center justify-center p-4 sm:p-6 md:p-12 z-10">
+            <SignInView
+              error={error}
+              pending={pending}
+              onSubmit={onSubmit}
+            />
+          </main>
         </div>
-
-        <div className="relative flex flex-col gap-6">
-          <Badge
-            variant="secondary"
-            className="w-fit gap-1.5 rounded-full bg-card/80 px-3 py-1 text-xs font-medium text-foreground ring-1 ring-border backdrop-blur"
-          >
-            <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-            Restricted area
-          </Badge>
-          <h1 className="text-balance text-4xl font-semibold leading-tight tracking-tight text-foreground">
-            Admin console for the Thirdspace team.
-          </h1>
-          <p className="max-w-md text-pretty text-base leading-7 text-muted-foreground">
-            Sign in to manage content, members, and events. Sessions are
-            signed and expire automatically after {ADMIN_SESSION_TTL_HOURS}{" "}
-            hours of inactivity.
-          </p>
-        </div>
-
-        <p className="relative text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Thirdspace — University of Toronto
-        </p>
-      </aside>
-
-      {/* Form panel */}
-      <main className="flex items-center justify-center px-6 py-12 sm:px-10">
-        {session ? (
-          <SignedInView
-            email={session.email}
-            ttlHours={ADMIN_SESSION_TTL_HOURS}
-            onSignOut={() => signOut()}
-          />
-        ) : (
-          <SignInView
-            error={error}
-            pending={pending}
-            onSubmit={onSubmit}
-          />
-        )}
-      </main>
+      )}
     </div>
   );
 }
@@ -200,40 +228,47 @@ function SignInView({
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }) {
   return (
-    <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 shadow-sm">
+    <div className="w-full max-w-md rounded-lg border border-border bg-card p-8 shadow-md relative overflow-hidden">
+      {/* Decorative Corner Marks */}
+      <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-border" />
+      <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-border" />
+      <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-border" />
+      <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-border" />
+
       <div className="mb-8 flex flex-col gap-2">
-        <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-          Admin sign in
+        <h2 className="text-xl font-bold tracking-tight text-foreground uppercase font-mono">
+          System Access
         </h2>
-        <p className="text-sm text-muted-foreground">
-          Use your admin email and password to continue.
+        <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
+          Provide authorized credentials
         </p>
       </div>
-      <form onSubmit={onSubmit} className="flex flex-col gap-5">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="email" className="text-foreground">
-            Email
+
+      <form onSubmit={onSubmit} className="flex flex-col gap-6">
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="email" className="text-xs font-mono uppercase text-muted-foreground">
+            Authorized Email
           </Label>
-          <div className="flex items-center gap-2 rounded-lg border border-input bg-card px-3 transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20">
-            <Mail className="h-4 w-4 text-muted-foreground" />
+          <div className="flex items-center gap-2 rounded border border-input bg-background px-3 transition-colors focus-within:border-ring">
+            <Mail className="h-3.5 w-3.5 text-muted-foreground" />
             <Input
               id="email"
               name="email"
               type="email"
               autoComplete="email"
               required
-              placeholder="you@example.com"
-              className="h-11 border-0 bg-transparent shadow-none focus-visible:ring-0"
+              placeholder="you@utoronto.ca"
+              className="h-10 border-0 bg-transparent shadow-none focus-visible:ring-0 text-xs font-mono"
             />
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="password" className="text-foreground">
-            Password
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="password" className="text-xs font-mono uppercase text-muted-foreground">
+            Security Passkey
           </Label>
-          <div className="flex items-center gap-2 rounded-lg border border-input bg-card px-3 transition-colors focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20">
-            <Lock className="h-4 w-4 text-muted-foreground" />
+          <div className="flex items-center gap-2 rounded border border-input bg-background px-3 transition-colors focus-within:border-ring">
+            <Lock className="h-3.5 w-3.5 text-muted-foreground" />
             <Input
               id="password"
               name="password"
@@ -241,31 +276,26 @@ function SignInView({
               autoComplete="current-password"
               required
               placeholder="••••••••"
-              className="h-11 border-0 bg-transparent shadow-none focus-visible:ring-0"
+              className="h-10 border-0 bg-transparent shadow-none focus-visible:ring-0 text-xs font-mono"
             />
           </div>
         </div>
 
         {error ? (
-          <p
-            role="alert"
-            className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive"
-          >
-            {error}
-          </p>
+          <div role="alert" className="rounded border border-destructive/20 bg-destructive/10 p-3 text-xs font-mono text-destructive">
+            [SYS_ERR] {error}
+          </div>
         ) : null}
 
         <Button
           type="submit"
           disabled={pending}
-          className="h-11 w-full rounded-lg bg-primary text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          variant="default"
+          size="lg"
+          className="w-full text-xs font-mono uppercase tracking-widest transition-all hover:bg-primary/90 active:scale-[0.98]"
         >
-          {pending ? "Signing in…" : "Sign in"}
+          {pending ? "Authenticating Session..." : "Initialize Session"}
         </Button>
-
-        <p className="text-center text-xs text-muted-foreground">
-          By signing in you agree to the Thirdspace acceptable-use policy.
-        </p>
       </form>
     </div>
   );
@@ -273,11 +303,9 @@ function SignInView({
 
 function SignedInView({
   email,
-  ttlHours,
   onSignOut,
 }: {
   email: string;
-  ttlHours: number;
   onSignOut: () => void;
 }) {
   const [content, setContent] = useState<any>(null);
@@ -294,6 +322,7 @@ function SignedInView({
 
   // Form tab selection
   const [activeTab, setActiveTab] = useState<"hero" | "pillars" | "navbar" | "footerLabs" | "location">("hero");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
     // Load config from localStorage if available
@@ -320,7 +349,7 @@ function SignedInView({
     localStorage.setItem("ts_gh_owner", repoOwner);
     localStorage.setItem("ts_gh_name", repoName);
     localStorage.setItem("ts_gh_branch", branch);
-    setMessage({ type: "success", text: "GitHub Settings saved locally!" });
+    setMessage({ type: "success", text: "GitHub Settings updated locally!" });
     setShowConfig(false);
   };
 
@@ -383,7 +412,7 @@ function SignedInView({
 
   const handlePublish = async () => {
     if (!pat) {
-      setMessage({ type: "error", text: "GitHub Personal Access Token (PAT) is required to publish directly." });
+      setMessage({ type: "error", text: "GitHub Personal Access Token (PAT) required to push changes." });
       setShowConfig(true);
       return;
     }
@@ -395,7 +424,6 @@ function SignedInView({
     const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}?ref=${branch}`;
 
     try {
-      // 1. Get current file SHA from GitHub API
       let sha = "";
       const getRes = await fetch(url, {
         headers: {
@@ -408,12 +436,10 @@ function SignedInView({
         const fileData = await getRes.json();
         sha = fileData.sha;
       } else if (getRes.status !== 404) {
-        throw new Error(`Failed to check existing file. Status: ${getRes.status}`);
+        throw new Error(`Connection verification failed. Status: ${getRes.status}`);
       }
 
-      // 2. Commit the file update to GitHub API
       const updatedContent = JSON.stringify(content, null, 2);
-      // UTF-8 base64 encoding handles special characters properly
       const base64Content = btoa(unescape(encodeURIComponent(updatedContent)));
 
       const commitRes = await fetch(url, {
@@ -434,520 +460,683 @@ function SignedInView({
       if (commitRes.ok) {
         setMessage({
           type: "success",
-          text: "Changes committed successfully! GitHub Pages will rebuild automatically in a couple of minutes.",
+          text: "Changes published to repository branch! Cloud compilation initiated.",
         });
       } else {
         const errorData = await commitRes.json();
-        throw new Error(errorData.message || "Failed to commit changes.");
+        throw new Error(errorData.message || "Branch commit rejected.");
       }
     } catch (err: any) {
       console.error(err);
-      setMessage({ type: "error", text: `Publish failed: ${err.message}` });
+      setMessage({ type: "error", text: `Publish rejected: ${err.message}` });
     } finally {
       setSaving(false);
     }
   };
 
+  const tabsList = [
+    { id: "hero" as const, label: "01. Hero Banner", icon: Layout },
+    { id: "pillars" as const, label: "02. Core Pillars", icon: Layers },
+    { id: "navbar" as const, label: "03. Nav Settings", icon: Compass },
+    { id: "footerLabs" as const, label: "04. Lab & Campuses", icon: Database },
+    { id: "location" as const, label: "05. Campus Location", icon: MapPin },
+  ];
+
   if (loading) {
     return (
-      <div className="flex h-64 items-center justify-center">
-        <p className="text-sm text-muted-foreground">Loading configuration CMS...</p>
+      <div className="flex h-screen items-center justify-center bg-background relative">
+        <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px]" />
+        <div className="relative flex flex-col items-center gap-2">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">Loading CMS Data...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-2xl rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-sm">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <Badge
-              variant="secondary"
-              className="gap-1.5 rounded-full bg-primary px-3 py-0.5 text-[10px] font-semibold tracking-wide uppercase text-primary-foreground"
-            >
-              <ShieldCheck className="h-3 w-3" />
-              Signed In
-            </Badge>
-            <span className="text-xs text-muted-foreground">{email}</span>
+    <div className="flex h-screen w-full overflow-hidden bg-background relative">
+      {/* Grid lines globally on the background canvas */}
+      <div className="absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:20px_20px] opacity-75 pointer-events-none z-0" />
+
+      {/* TECHNICAL LAYOUT: LEFT SIDEBAR (Structural Outline) */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-30 md:relative flex h-full flex-col border-r border-border bg-card transition-all duration-300 ${
+          sidebarOpen ? "w-64 translate-x-0" : "w-16 -translate-x-full md:translate-x-0"
+        }`}
+      >
+        {/* Sidebar top corner line */}
+        <div className="absolute top-0 left-0 right-0 h-[3px] bg-primary" />
+
+        {/* Brand Header */}
+        <div className="flex h-16 items-center justify-between px-4 border-b border-border">
+          <div className="flex items-center gap-2.5 overflow-hidden">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded border-2 border-primary bg-background text-[10px] font-bold font-mono">
+              TS
+            </div>
+            {sidebarOpen && (
+              <span className="text-xs font-bold font-mono uppercase tracking-widest text-foreground">
+                Thirdspace.CMS
+              </span>
+            )}
           </div>
-          <h2 className="text-2xl font-bold tracking-tight text-foreground mt-1.5">
-            Website Content Manager
-          </h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Control all text values across the Thirdspace site.
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowConfig(!showConfig)}
-            className="text-xs rounded-lg"
-          >
-            GitHub Settings
-          </Button>
           <Button
             variant="ghost"
-            size="sm"
-            onClick={onSignOut}
-            className="text-xs rounded-lg text-muted-foreground hover:text-foreground"
+            size="icon"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="hidden md:flex h-7 w-7 hover:bg-muted"
           >
-            Sign out
+            {sidebarOpen ? <ChevronLeft className="h-4 w-4 text-muted-foreground" /> : <ChevronRight className="h-4 w-4 text-muted-foreground" />}
           </Button>
         </div>
-      </div>
 
-      {message && (
-        <div
-          className={`mb-6 rounded-lg p-3 text-xs border ${
-            message.type === "success"
-              ? "bg-emerald-50 text-emerald-800 border-emerald-200"
-              : "bg-destructive/10 text-destructive border-destructive/20"
-          }`}
-        >
-          {message.text}
+        {/* Index Navigation list */}
+        <div className="p-3">
+          <span className={`text-[10px] font-mono uppercase tracking-wider text-muted-foreground px-3 block mb-2 ${sidebarOpen ? "" : "sr-only"}`}>
+            Draft Sections
+          </span>
+          <nav className="space-y-1">
+            {tabsList.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex w-full items-center gap-3 rounded px-3 py-2 text-xs font-mono transition-colors text-left ${
+                    isActive
+                      ? "bg-primary text-primary-foreground font-bold"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  {sidebarOpen && <span>{tab.label}</span>}
+                </button>
+              );
+            })}
+          </nav>
         </div>
-      )}
 
-      {/* GitHub Integration Setup Modal/Card overlay */}
-      {showConfig && (
-        <div className="mb-6 p-4 rounded-xl border border-accent/30 bg-accent/5 space-y-4">
-          <h3 className="text-sm font-semibold text-accent-foreground">GitHub Commit Integration</h3>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Enter a Personal Access Token (PAT) to write directly to your repository on commit. Changes will trigger your GitHub Actions build workflow automatically.
-          </p>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="space-y-1">
-              <Label htmlFor="pat" className="text-xs text-foreground">GitHub PAT (Token)</Label>
-              <Input
-                id="pat"
-                type="password"
-                placeholder="ghp_..."
-                value={pat}
-                onChange={(e) => setPat(e.target.value)}
-                className="h-9 text-xs"
-              />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="owner" className="text-xs text-foreground">Repo Owner</Label>
-              <Input
-                id="owner"
-                type="text"
-                placeholder="critical-nlp"
-                value={repoOwner}
-                onChange={(e) => setRepoOwner(e.target.value)}
-                className="h-9 text-xs"
-              />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="name" className="text-xs text-foreground">Repo Name</Label>
-              <Input
-                id="name"
-                type="text"
-                placeholder="thirdspace.toronto.edu"
-                value={repoName}
-                onChange={(e) => setRepoName(e.target.value)}
-                className="h-9 text-xs"
-              />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="branch" className="text-xs text-foreground">Branch</Label>
-              <Input
-                id="branch"
-                type="text"
-                placeholder="main"
-                value={branch}
-                onChange={(e) => setBranch(e.target.value)}
-                className="h-9 text-xs"
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-2 pt-1">
-            <Button size="sm" variant="ghost" className="text-xs" onClick={() => setShowConfig(false)}>
-              Cancel
-            </Button>
-            <Button size="sm" className="text-xs bg-primary text-primary-foreground" onClick={saveGithubConfig}>
-              Save Settings Locally
+        {/* User profile / session state in footer */}
+        <div className="mt-auto border-t border-border p-3 bg-muted/40">
+          <div className={`flex items-center gap-3 ${sidebarOpen ? "justify-between" : "justify-center"}`}>
+            {sidebarOpen ? (
+              <div className="flex flex-col overflow-hidden">
+                <span className="text-[10px] font-mono text-foreground truncate">{email}</span>
+                <span className="text-[9px] font-mono text-muted-foreground uppercase">SYS_KEYS_LOADED</span>
+              </div>
+            ) : null}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onSignOut}
+              className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+              title="Terminate Session"
+            >
+              <LogOut className="h-4 w-4" />
             </Button>
           </div>
         </div>
-      )}
+      </aside>
 
-      {/* Editor Tabs Navigation */}
-      <div className="flex border-b border-border mb-6 overflow-x-auto pb-1 scrollbar-thin">
-        {(["hero", "pillars", "navbar", "footerLabs", "location"] as const).map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 text-xs font-semibold capitalize border-b-2 whitespace-nowrap transition-all ${
-              activeTab === tab
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {tab === "footerLabs" ? "Footer & Links" : tab}
-          </button>
-        ))}
-      </div>
-
-      {/* Edit Sections */}
-      <div className="space-y-4 min-h-[220px]">
-        {activeTab === "hero" && content?.hero && (
-          <div className="space-y-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="hero-badge" className="text-xs text-foreground font-semibold">Badge Banner text</Label>
-              <Input
-                id="hero-badge"
-                value={content.hero.badge}
-                onChange={(e) => handleFieldChange("hero", "badge", e.target.value)}
-                className="h-10 text-sm"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="hero-title" className="text-xs text-foreground font-semibold">Title Headline</Label>
-              <Input
-                id="hero-title"
-                value={content.hero.title}
-                onChange={(e) => handleFieldChange("hero", "title", e.target.value)}
-                className="h-10 text-sm"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="hero-desc" className="text-xs text-foreground font-semibold">Description Text</Label>
-              <textarea
-                id="hero-desc"
-                rows={3}
-                value={content.hero.description}
-                onChange={(e) => handleFieldChange("hero", "description", e.target.value)}
-                className="w-full text-sm p-3 rounded-lg border border-input bg-card focus:outline-none focus:ring-2 focus:ring-ring/20 resize-y"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="hero-p-action" className="text-xs text-foreground font-semibold">Primary Action</Label>
-                <Input
-                  id="hero-p-action"
-                  value={content.hero.primaryActionText}
-                  onChange={(e) => handleFieldChange("hero", "primaryActionText", e.target.value)}
-                  className="h-10 text-sm"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="hero-s-action" className="text-xs text-foreground font-semibold">Secondary Action</Label>
-                <Input
-                  id="hero-s-action"
-                  value={content.hero.secondaryActionText}
-                  onChange={(e) => handleFieldChange("hero", "secondaryActionText", e.target.value)}
-                  className="h-10 text-sm"
-                />
-              </div>
+      {/* WORKSPACE AREA */}
+      <div className={`flex flex-1 flex-col overflow-hidden z-10 relative transition-all duration-300 ${
+        sidebarOpen ? "ml-64 md:ml-0" : "ml-0"
+      }`}>
+        {/* Workspace Top Header Bar */}
+        <header className="flex h-16 items-center justify-between border-b border-border bg-card px-6">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="h-8 w-8 text-muted-foreground"
+            >
+              <Menu className="h-4 w-4" />
+            </Button>
+            <div className="flex flex-col">
+              <span className="text-[9px] font-mono uppercase tracking-widest text-muted-foreground">Current Scope</span>
+              <h1 className="text-sm font-bold tracking-tight text-foreground uppercase font-mono flex items-center gap-2">
+                <FileCode className="h-4 w-4 text-primary" />
+                {activeTab === "footerLabs" ? "Labs & Campuses" : activeTab}
+              </h1>
             </div>
           </div>
-        )}
 
-        {activeTab === "pillars" && content?.pillars && (
-          <div className="space-y-5">
-            {content.pillars.map((pillar: any, index: number) => (
-              <div key={pillar.id} className="p-4 rounded-xl border border-border bg-muted/20 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-primary/80 capitalize">Pillar {index + 1}</span>
-                  <span className="text-[10px] font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded">
-                    Icon: {pillar.icon}
-                  </span>
-                </div>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                  <div className="sm:col-span-1 space-y-1">
-                    <Label htmlFor={`p-title-${index}`} className="text-xs font-semibold text-foreground">Title</Label>
-                    <Input
-                      id={`p-title-${index}`}
-                      value={pillar.title}
-                      onChange={(e) => handlePillarChange(index, "title", e.target.value)}
-                      className="h-9 text-xs"
-                    />
-                  </div>
-                  <div className="sm:col-span-2 space-y-1">
-                    <Label htmlFor={`p-body-${index}`} className="text-xs font-semibold text-foreground">Description</Label>
-                    <Input
-                      id={`p-body-${index}`}
-                      value={pillar.body}
-                      onChange={(e) => handlePillarChange(index, "body", e.target.value)}
-                      className="h-9 text-xs"
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
+          {/* Action Blocks */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowConfig(!showConfig)}
+              className="text-xs font-mono h-8 rounded"
+            >
+              <Settings className="h-3.5 w-3.5 mr-1.5" />
+              <span className="hidden sm:inline">Settings</span>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDownload}
+              className="text-xs font-mono h-8 rounded"
+            >
+              <Download className="h-3.5 w-3.5 mr-1.5" />
+              <span className="hidden sm:inline">Backup</span>
+            </Button>
+            <Button
+              disabled={saving}
+              onClick={handlePublish}
+              variant="default"
+              size="sm"
+              className="text-xs font-mono h-8 rounded transition-all active:scale-[0.98]"
+            >
+              {saving ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
+              ) : (
+                <UploadCloud className="h-3.5 w-3.5 mr-1.5" />
+              )}
+              <span>Commit Draft</span>
+            </Button>
           </div>
-        )}
+        </header>
 
-        {activeTab === "navbar" && content?.navbar && (
-          <div className="space-y-4">
-            <h3 className="text-xs font-bold text-primary uppercase tracking-wide">Brand Wordmarks</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="nav-brandName" className="text-xs text-foreground font-semibold">Header Title (e.g. Thirdspace)</Label>
-                <Input
-                  id="nav-brandName"
-                  value={content.navbar.brandName}
-                  onChange={(e) => handleFieldChange("navbar", "brandName", e.target.value)}
-                  className="h-10 text-sm"
-                />
+        {/* Main interactive scrollable container */}
+        <main className="flex-1 overflow-y-auto p-6 md:p-8">
+          <div className="mx-auto max-w-3xl space-y-6">
+            {message && (
+              <div
+                className={`rounded border p-4 text-xs font-mono flex items-center justify-between gap-3 ${
+                  message.type === "success"
+                    ? "bg-primary text-primary-foreground border-border"
+                    : "bg-destructive/10 text-destructive border-destructive/20"
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent animate-ping" />
+                  <span>{message.text}</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 text-xs font-mono text-inherit hover:bg-white/10"
+                  onClick={() => setMessage(null)}
+                >
+                  [Dismiss]
+                </Button>
               </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="nav-brandTagline" className="text-xs text-foreground font-semibold">Header Tagline (e.g. UofT)</Label>
-                <Input
-                  id="nav-brandTagline"
-                  value={content.navbar.brandTagline}
-                  onChange={(e) => handleFieldChange("navbar", "brandTagline", e.target.value)}
-                  className="h-10 text-sm"
-                />
-              </div>
-            </div>
+            )}
 
-            <div className="border-t border-border pt-4 mt-2">
-              <h3 className="text-xs font-bold text-primary uppercase tracking-wide mb-3">Navbar Links</h3>
-              {content.navbar.links.map((link: any, index: number) => (
-                <div key={index} className="grid grid-cols-2 gap-3 p-3 rounded-lg border border-border/80 bg-muted/20">
-                  <div className="space-y-1">
-                    <Label className="text-[11px] text-muted-foreground font-semibold">Link Label</Label>
-                    <Input
-                      value={link.label}
-                      onChange={(e) => handleNavbarLinkChange(index, "label", e.target.value)}
-                      className="h-9 text-xs"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <Label className="text-[11px] text-muted-foreground font-semibold">URL Path</Label>
-                    <Input
-                      value={link.href}
-                      onChange={(e) => handleNavbarLinkChange(index, "href", e.target.value)}
-                      className="h-9 text-xs"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {activeTab === "footerLabs" && content && (
-          <div className="space-y-5">
-            {/* General Brand details */}
-            <div className="space-y-3">
-              <h3 className="text-xs font-bold text-primary uppercase tracking-wide">Brand & Description</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <Label htmlFor="footer-brand-name" className="text-xs text-foreground">Brand Name</Label>
-                  <Input
-                    id="footer-brand-name"
-                    value={content.brand.name}
-                    onChange={(e) => handleFieldChange("brand", "name", e.target.value)}
-                    className="h-9 text-xs"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="footer-brand-tag" className="text-xs text-foreground">Tagline</Label>
-                  <Input
-                    id="footer-brand-tag"
-                    value={content.brand.tagline}
-                    onChange={(e) => handleFieldChange("brand", "tagline", e.target.value)}
-                    className="h-9 text-xs"
-                  />
-                </div>
-              </div>
-              <div className="space-y-1">
-                <Label htmlFor="footer-brand-desc" className="text-xs text-foreground">Footer Bio Description</Label>
-                <textarea
-                  id="footer-brand-desc"
-                  rows={2}
-                  value={content.brand.footerDescription}
-                  onChange={(e) => handleFieldChange("brand", "footerDescription", e.target.value)}
-                  className="w-full text-xs p-2.5 rounded-lg border border-input bg-card focus:outline-none focus:ring-2 focus:ring-ring/20 resize-y"
-                />
-              </div>
-            </div>
-
-            {/* Socials & Contact */}
-            <div className="border-t border-border pt-4">
-              <h3 className="text-xs font-bold text-primary uppercase tracking-wide mb-3">Contact & Socials</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <Label htmlFor="social-x" className="text-xs text-foreground font-semibold">X (Twitter) URL</Label>
-                  <Input
-                    id="social-x"
-                    value={content.socials.xUrl}
-                    onChange={(e) => handleFieldChange("socials", "xUrl", e.target.value)}
-                    className="h-9 text-xs"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="social-email" className="text-xs text-foreground font-semibold">Contact Email</Label>
-                  <Input
-                    id="social-email"
-                    type="email"
-                    value={content.socials.email}
-                    onChange={(e) => handleFieldChange("socials", "email", e.target.value)}
-                    className="h-9 text-xs"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Research & Labs list */}
-            <div className="border-t border-border pt-4">
-              <h3 className="text-xs font-bold text-primary uppercase tracking-wide mb-3">Research & Labs</h3>
-              <div className="space-y-2">
-                {content.researchLabs.items.map((lab: any, index: number) => (
-                  <div key={index} className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 rounded-lg border border-border/80 bg-muted/20">
-                    <div className="space-y-1 sm:col-span-1">
-                      <Label className="text-[10px] text-muted-foreground">Lab Name</Label>
+            {/* GitHub integration overlay config */}
+            {showConfig && (
+              <Card className="rounded-lg border-2 border-dashed border-border bg-card">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-xs font-mono uppercase tracking-wider text-foreground flex items-center gap-2">
+                    <Database className="h-4 w-4 text-primary" />
+                    GitHub Sync Protocol
+                  </CardTitle>
+                  <CardDescription className="text-xs">
+                    Specify the secure repository endpoint keys. Local values persist inside secure cache.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="space-y-1">
+                      <Label htmlFor="pat" className="text-[10px] font-mono uppercase text-muted-foreground">Security PAT Key</Label>
                       <Input
-                        value={lab.name}
-                        onChange={(e) => handleListItemChange("researchLabs", index, "name", e.target.value)}
-                        className="h-8 text-xs px-2"
+                        id="pat"
+                        type="password"
+                        placeholder="ghp_..."
+                        value={pat}
+                        onChange={(e) => setPat(e.target.value)}
+                        className="h-9 text-xs font-mono"
                       />
                     </div>
-                    <div className="space-y-1 sm:col-span-1">
-                      <Label className="text-[10px] text-muted-foreground">URL Link (optional)</Label>
+                    <div className="space-y-1">
+                      <Label htmlFor="owner" className="text-[10px] font-mono uppercase text-muted-foreground">Repo Owner</Label>
                       <Input
-                        value={lab.url}
-                        placeholder="No link"
-                        onChange={(e) => handleListItemChange("researchLabs", index, "url", e.target.value)}
-                        className="h-8 text-xs px-2"
+                        id="owner"
+                        type="text"
+                        placeholder="critical-nlp"
+                        value={repoOwner}
+                        onChange={(e) => setRepoOwner(e.target.value)}
+                        className="h-9 text-xs font-mono"
                       />
                     </div>
-                    <div className="space-y-1 sm:col-span-1 flex flex-col justify-end">
-                      <div className="flex items-center gap-2 pb-2">
-                        <input
-                          id={`lab-ext-${index}`}
-                          type="checkbox"
-                          checked={lab.isExternal}
-                          onChange={(e) => handleListItemChange("researchLabs", index, "isExternal", e.target.checked)}
-                          className="h-3.5 w-3.5 rounded border-gray-300 text-primary focus:ring-primary"
+                    <div className="space-y-1">
+                      <Label htmlFor="name" className="text-[10px] font-mono uppercase text-muted-foreground">Repo Directory</Label>
+                      <Input
+                        id="name"
+                        type="text"
+                        placeholder="thirdspace.toronto.edu"
+                        value={repoName}
+                        onChange={(e) => setRepoName(e.target.value)}
+                        className="h-9 text-xs font-mono"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="branch" className="text-[10px] font-mono uppercase text-muted-foreground">Target Branch</Label>
+                      <Input
+                        id="branch"
+                        type="text"
+                        placeholder="main"
+                        value={branch}
+                        onChange={(e) => setBranch(e.target.value)}
+                        className="h-9 text-xs font-mono"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-end gap-2 border-t border-border pt-3">
+                  <Button size="sm" variant="ghost" className="text-xs font-mono" onClick={() => setShowConfig(false)}>
+                    [Cancel]
+                  </Button>
+                  <Button size="sm" variant="default" className="text-xs font-mono rounded" onClick={saveGithubConfig}>
+                    [Apply Changes]
+                  </Button>
+                </CardFooter>
+              </Card>
+            )}
+
+            {/* Dynamic settings draft sheets based on active index */}
+            <div className="space-y-6">
+              {activeTab === "hero" && content?.hero && (
+                <div className="relative bg-card border border-border rounded p-6 shadow-sm">
+                  {/* Design Accent corner marks */}
+                  <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
+                    S01
+                  </div>
+                  
+                  <div className="mb-6">
+                    <h2 className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Draft Sheet</h2>
+                    <h3 className="text-base font-bold text-foreground font-serif">Hero Section Properties</h3>
+                    <p className="text-[11px] text-muted-foreground mt-1">Configures index page greeting wordmarks and action CTAs.</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <Label htmlFor="hero-badge" className="text-[10px] font-mono uppercase text-muted-foreground">Eyebrow Banner</Label>
+                      <Input
+                        id="hero-badge"
+                        value={content.hero.badge}
+                        onChange={(e) => handleFieldChange("hero", "badge", e.target.value)}
+                        className="font-mono text-xs"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="hero-title" className="text-[10px] font-mono uppercase text-muted-foreground">Header Headline</Label>
+                      <Input
+                        id="hero-title"
+                        value={content.hero.title}
+                        onChange={(e) => handleFieldChange("hero", "title", e.target.value)}
+                        className="font-serif text-sm font-bold"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="hero-desc" className="text-[10px] font-mono uppercase text-muted-foreground">Description Body</Label>
+                      <textarea
+                        id="hero-desc"
+                        rows={4}
+                        value={content.hero.description}
+                        onChange={(e) => handleFieldChange("hero", "description", e.target.value)}
+                        className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div className="space-y-1">
+                        <Label htmlFor="hero-p-action" className="text-[10px] font-mono uppercase text-muted-foreground">Primary CTA Link</Label>
+                        <Input
+                          id="hero-p-action"
+                          value={content.hero.primaryActionText}
+                          onChange={(e) => handleFieldChange("hero", "primaryActionText", e.target.value)}
+                          className="font-mono text-xs"
                         />
-                        <Label htmlFor={`lab-ext-${index}`} className="text-[10px] text-muted-foreground font-semibold cursor-pointer">
-                          External Link (New Tab)
-                        </Label>
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="hero-s-action" className="text-[10px] font-mono uppercase text-muted-foreground">Secondary CTA Link</Label>
+                        <Input
+                          id="hero-s-action"
+                          value={content.hero.secondaryActionText}
+                          onChange={(e) => handleFieldChange("hero", "secondaryActionText", e.target.value)}
+                          className="font-mono text-xs"
+                        />
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              )}
 
-            {/* Campuses list */}
-            <div className="border-t border-border pt-4">
-              <h3 className="text-xs font-bold text-primary uppercase tracking-wide mb-3">Campuses</h3>
-              <div className="space-y-2.5">
-                {content.campuses.items.map((campus: any, index: number) => (
-                  <div key={index} className="grid grid-cols-2 gap-3 p-3 rounded-lg border border-border/80 bg-muted/20">
-                    <div className="space-y-1">
-                      <Label className="text-[10px] text-muted-foreground">Campus Name</Label>
-                      <Input
-                        value={campus.name}
-                        onChange={(e) => handleListItemChange("campuses", index, "name", e.target.value)}
-                        className="h-8 text-xs px-2"
-                      />
+              {activeTab === "pillars" && content?.pillars && (
+                <div className="space-y-4">
+                  <div className="mb-4">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Draft Sheet</span>
+                    <h3 className="text-base font-bold text-foreground font-serif">Core Pillars</h3>
+                    <p className="text-[11px] text-muted-foreground">Modify structural information cards displayed across layout grids.</p>
+                  </div>
+                  {content.pillars.map((pillar: any, index: number) => (
+                    <div key={pillar.id} className="relative bg-card border border-border rounded p-6 shadow-sm">
+                      <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
+                        P0{index + 1}
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        <div className="sm:col-span-1 space-y-1">
+                          <Label htmlFor={`p-title-${index}`} className="text-[10px] font-mono uppercase text-muted-foreground">Title Accent</Label>
+                          <Input
+                            id={`p-title-${index}`}
+                            value={pillar.title}
+                            onChange={(e) => handlePillarChange(index, "title", e.target.value)}
+                            className="font-mono text-xs font-bold"
+                          />
+                        </div>
+                        <div className="sm:col-span-2 space-y-1">
+                          <Label htmlFor={`p-body-${index}`} className="text-[10px] font-mono uppercase text-muted-foreground">Supporting Content</Label>
+                          <Input
+                            id={`p-body-${index}`}
+                            value={pillar.body}
+                            onChange={(e) => handlePillarChange(index, "body", e.target.value)}
+                            className="text-xs"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {activeTab === "navbar" && content?.navbar && (
+                <div className="space-y-6">
+                  <div className="relative bg-card border border-border rounded p-6 shadow-sm">
+                    <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
+                      N01
+                    </div>
+                    
+                    <div className="mb-4">
+                      <span className="text-[10px] font-mono uppercase text-muted-foreground">Module Scope</span>
+                      <h3 className="text-sm font-bold text-foreground font-mono uppercase">Header wordmarks</h3>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div className="space-y-1">
+                        <Label htmlFor="nav-brandName" className="text-[10px] font-mono uppercase text-muted-foreground">Primary Brand Title</Label>
+                        <Input
+                          id="nav-brandName"
+                          value={content.navbar.brandName}
+                          onChange={(e) => handleFieldChange("navbar", "brandName", e.target.value)}
+                          className="font-mono text-xs"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="nav-brandTagline" className="text-[10px] font-mono uppercase text-muted-foreground">Institutional Sub-Wordmark</Label>
+                        <Input
+                          id="nav-brandTagline"
+                          value={content.navbar.brandTagline}
+                          onChange={(e) => handleFieldChange("navbar", "brandTagline", e.target.value)}
+                          className="font-mono text-xs"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <span className="text-[10px] font-mono uppercase text-muted-foreground tracking-wider">Navigation Address Indexes</span>
+                    {content.navbar.links.map((link: any, index: number) => (
+                      <div key={index} className="relative bg-card border border-border rounded p-6 shadow-sm">
+                        <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
+                          L0{index + 1}
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-1">
+                            <Label className="text-[10px] font-mono uppercase text-muted-foreground">Label Identifier</Label>
+                            <Input
+                              value={link.label}
+                              onChange={(e) => handleNavbarLinkChange(index, "label", e.target.value)}
+                              className="font-mono text-xs"
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <Label className="text-[10px] font-mono uppercase text-muted-foreground">Dest path</Label>
+                            <Input
+                              value={link.href}
+                              onChange={(e) => handleNavbarLinkChange(index, "href", e.target.value)}
+                              className="font-mono text-xs text-muted-foreground"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "footerLabs" && content && (
+                <div className="space-y-6">
+                  {/* Brand Detail */}
+                  <div className="relative bg-card border border-border rounded p-6 shadow-sm">
+                    <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
+                      F01
+                    </div>
+                    
+                    <div className="mb-4">
+                      <span className="text-[10px] font-mono uppercase text-muted-foreground">Footer Context</span>
+                      <h3 className="text-sm font-bold text-foreground font-serif">Brand bio metadata</h3>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                          <Label htmlFor="footer-brand-name" className="text-[10px] font-mono uppercase text-muted-foreground">Title Label</Label>
+                          <Input
+                            id="footer-brand-name"
+                            value={content.brand.name}
+                            onChange={(e) => handleFieldChange("brand", "name", e.target.value)}
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <Label htmlFor="footer-brand-tag" className="text-[10px] font-mono uppercase text-muted-foreground">Tag Tagline</Label>
+                          <Input
+                            id="footer-brand-tag"
+                            value={content.brand.tagline}
+                            onChange={(e) => handleFieldChange("brand", "tagline", e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="footer-brand-desc" className="text-[10px] font-mono uppercase text-muted-foreground">Footer Editorial Paragraph</Label>
+                        <textarea
+                          id="footer-brand-desc"
+                          rows={3}
+                          value={content.brand.footerDescription}
+                          onChange={(e) => handleFieldChange("brand", "footerDescription", e.target.value)}
+                          className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Social / Contact */}
+                  <div className="relative bg-card border border-border rounded p-6 shadow-sm">
+                    <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
+                      F02
+                    </div>
+                    
+                    <div className="mb-4">
+                      <span className="text-[10px] font-mono uppercase text-muted-foreground">Link Modules</span>
+                      <h3 className="text-sm font-bold text-foreground font-mono uppercase">Social channels</h3>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <Label htmlFor="social-x" className="text-[10px] font-mono uppercase text-muted-foreground">X (Twitter) URL</Label>
+                        <Input
+                          id="social-x"
+                          value={content.socials.xUrl}
+                          onChange={(e) => handleFieldChange("socials", "xUrl", e.target.value)}
+                          className="font-mono text-xs"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="social-email" className="text-[10px] font-mono uppercase text-muted-foreground">Contact Gateway Email</Label>
+                        <Input
+                          id="social-email"
+                          type="email"
+                          value={content.socials.email}
+                          onChange={(e) => handleFieldChange("socials", "email", e.target.value)}
+                          className="font-mono text-xs"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Research list */}
+                  <div className="space-y-4">
+                    <span className="text-[10px] font-mono uppercase text-muted-foreground tracking-wider">Research Directories</span>
+                    {content.researchLabs.items.map((lab: any, index: number) => (
+                      <div key={index} className="relative bg-card border border-border rounded p-6 shadow-sm">
+                        <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
+                          R0{index + 1}
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          <div className="space-y-1">
+                            <Label className="text-[10px] font-mono uppercase text-slate-500">Lab Identifier</Label>
+                            <Input
+                              value={lab.name}
+                              onChange={(e) => handleListItemChange("researchLabs", index, "name", e.target.value)}
+                              className="font-mono text-xs"
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <Label className="text-[10px] font-mono uppercase text-slate-500">Hyperlink Destination</Label>
+                            <Input
+                              value={lab.url}
+                              placeholder="No active target"
+                              onChange={(e) => handleListItemChange("researchLabs", index, "url", e.target.value)}
+                              className="font-mono text-xs text-muted-foreground"
+                            />
+                          </div>
+                          <div className="flex flex-col justify-end">
+                            <div className="flex items-center gap-2 pb-2">
+                              <input
+                                id={`lab-ext-${index}`}
+                                type="checkbox"
+                                checked={lab.isExternal}
+                                onChange={(e) => handleListItemChange("researchLabs", index, "isExternal", e.target.checked)}
+                                className="h-4 w-4 rounded border-border text-foreground focus:ring-ring bg-background"
+                              />
+                              <Label htmlFor={`lab-ext-${index}`} className="text-[10px] font-mono uppercase text-muted-foreground cursor-pointer select-none">
+                                Open external target
+                              </Label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Campuses list */}
+                  <div className="space-y-4">
+                    <span className="text-[10px] font-mono uppercase text-muted-foreground tracking-wider">Campus Portals</span>
+                    {content.campuses.items.map((campus: any, index: number) => (
+                      <div key={index} className="relative bg-card border border-border rounded p-6 shadow-sm">
+                        <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
+                          C0{index + 1}
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-1">
+                            <Label className="text-[10px] font-mono uppercase text-muted-foreground">Campus Label</Label>
+                            <Input
+                              value={campus.name}
+                              onChange={(e) => handleListItemChange("campuses", index, "name", e.target.value)}
+                              className="font-mono text-xs"
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <Label className="text-[10px] font-mono uppercase text-muted-foreground">Portal Target URL</Label>
+                            <Input
+                              value={campus.url}
+                              onChange={(e) => handleListItemChange("campuses", index, "url", e.target.value)}
+                              className="font-mono text-xs text-muted-foreground"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "location" && content?.location && (
+                <div className="relative bg-card border border-border rounded p-6 shadow-sm">
+                  <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
+                    L01
+                  </div>
+                  
+                  <div className="mb-6">
+                    <h2 className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Physical Coordinates</h2>
+                    <h3 className="text-base font-bold text-foreground font-serif">Spatial details</h3>
+                    <p className="text-[11px] text-muted-foreground">Configure geolocation variables matching the studio campus.</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <Label htmlFor="loc-title" className="text-[10px] font-mono uppercase text-muted-foreground">Campus Name</Label>
+                        <Input
+                          id="loc-title"
+                          value={content.location.title}
+                          onChange={(e) => handleFieldChange("location", "title", e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="loc-coords" className="text-[10px] font-mono uppercase text-muted-foreground">Grid Coordinates</Label>
+                        <Input
+                          id="loc-coords"
+                          value={content.location.coordinates}
+                          onChange={(e) => handleFieldChange("location", "coordinates", e.target.value)}
+                          className="font-mono text-xs"
+                        />
+                      </div>
                     </div>
                     <div className="space-y-1">
-                      <Label className="text-[10px] text-muted-foreground">URL Website</Label>
+                      <Label htmlFor="loc-inst" className="text-[10px] font-mono uppercase text-muted-foreground">Affiliation Institution</Label>
                       <Input
-                        value={campus.url}
-                        onChange={(e) => handleListItemChange("campuses", index, "url", e.target.value)}
-                        className="h-8 text-xs px-2"
+                        id="loc-inst"
+                        value={content.location.institution}
+                        onChange={(e) => handleFieldChange("location", "institution", e.target.value)}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div className="space-y-1">
+                        <Label htmlFor="loc-street" className="text-[10px] font-mono uppercase text-muted-foreground">Street Node</Label>
+                        <Input
+                          id="loc-street"
+                          value={content.location.street}
+                          onChange={(e) => handleFieldChange("location", "street", e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="loc-city" className="text-[10px] font-mono uppercase text-muted-foreground">City / Country Node</Label>
+                        <Input
+                          id="loc-city"
+                          value={content.location.cityCountry}
+                          onChange={(e) => handleFieldChange("location", "cityCountry", e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="loc-query" className="text-[10px] font-mono uppercase text-muted-foreground">Google Maps Query Hash</Label>
+                      <Input
+                        id="loc-query"
+                        value={content.location.mapsQuery}
+                        onChange={(e) => handleFieldChange("location", "mapsQuery", e.target.value)}
+                        className="font-mono text-xs text-muted-foreground"
                       />
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
           </div>
-        )}
-
-        {activeTab === "location" && content?.location && (
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="loc-title" className="text-xs text-foreground font-semibold">Location Title</Label>
-                <Input
-                  id="loc-title"
-                  value={content.location.title}
-                  onChange={(e) => handleFieldChange("location", "title", e.target.value)}
-                  className="h-10 text-sm"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="loc-coords" className="text-xs text-foreground font-semibold">Coordinates (text)</Label>
-                <Input
-                  id="loc-coords"
-                  value={content.location.coordinates}
-                  onChange={(e) => handleFieldChange("location", "coordinates", e.target.value)}
-                  className="h-10 text-sm"
-                />
-              </div>
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="loc-inst" className="text-xs text-foreground font-semibold">Institution Name</Label>
-              <Input
-                id="loc-inst"
-                value={content.location.institution}
-                onChange={(e) => handleFieldChange("location", "institution", e.target.value)}
-                className="h-10 text-sm"
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="space-y-1.5">
-                <Label htmlFor="loc-street" className="text-xs text-foreground font-semibold">Street Address</Label>
-                <Input
-                  id="loc-street"
-                  value={content.location.street}
-                  onChange={(e) => handleFieldChange("location", "street", e.target.value)}
-                  className="h-10 text-sm"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="loc-city" className="text-xs text-foreground font-semibold">City, Postal, Country</Label>
-                <Input
-                  id="loc-city"
-                  value={content.location.cityCountry}
-                  onChange={(e) => handleFieldChange("location", "cityCountry", e.target.value)}
-                  className="h-10 text-sm"
-                />
-              </div>
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="loc-query" className="text-xs text-foreground font-semibold font-mono">Google Maps Query (URL Encoded)</Label>
-              <Input
-                id="loc-query"
-                value={content.location.mapsQuery}
-                onChange={(e) => handleFieldChange("location", "mapsQuery", e.target.value)}
-                className="h-10 text-sm font-mono text-muted-foreground"
-              />
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Action Buttons */}
-      <div className="mt-8 border-t border-border pt-6 flex flex-col sm:flex-row gap-3 justify-between">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={handleDownload}
-          className="rounded-lg h-11 text-xs"
-        >
-          Download content.json
-        </Button>
-        <div className="flex gap-3">
-          <Button
-            type="button"
-            disabled={saving}
-            onClick={handlePublish}
-            className="rounded-lg h-11 px-6 text-xs bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
-          >
-            {saving ? "Publishing to GitHub..." : "Publish to GitHub"}
-          </Button>
-        </div>
+        </main>
       </div>
     </div>
   );

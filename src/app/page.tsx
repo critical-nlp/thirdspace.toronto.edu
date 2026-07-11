@@ -31,20 +31,20 @@ export default function Home() {
             <Sparkles className="h-3.5 w-3.5" />
             {hero.badge}
           </Badge>
-          <h1 className="text-balance text-5xl font-semibold tracking-tight text-foreground sm:text-6xl">
+          <h1 className="text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-5xl md:text-6xl">
             {hero.title}
           </h1>
-          <p className="mx-auto max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
+          <p className="mx-auto max-w-2xl text-pretty text-sm sm:text-base md:text-lg leading-relaxed text-muted-foreground">
             {hero.description}
           </p>
-          <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
-            <Button className="h-11 rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+          <div className="mt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button className="h-11 w-full sm:w-auto rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground hover:bg-primary/90">
               {hero.primaryActionText}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button
               variant="outline"
-              className="h-11 rounded-md border-border px-6"
+              className="h-11 w-full sm:w-auto rounded-md border-border px-6"
             >
               {hero.secondaryActionText}
             </Button>

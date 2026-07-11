@@ -49,72 +49,54 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  /* UofT brand anchor: U of T Blue (Pantone 655 / #1E3765). The single source
+     of truth — change this and the whole site re-derives. Slight twist: a
+     warm gold accent sits beside the institutional blue for character. */
+  --brand-hue: 265;
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* UofT Blue is #1E3765. Primary is set explicitly to that hex, neutrals
+     are still tinted off the brand-hue so the palette stays cohesive. */
+  --background: oklch(0.985 0.012 var(--brand-hue));
+  --foreground: oklch(0.18 0.03 var(--brand-hue));
+  --card: oklch(1 0.008 var(--brand-hue));
+  --card-foreground: oklch(0.18 0.03 var(--brand-hue));
+  --popover: oklch(1 0.008 var(--brand-hue));
+  --popover-foreground: oklch(0.18 0.03 var(--brand-hue));
+
+  /* Primary = U of T Blue (#002A5C). */
+  --primary: oklch(0.26 0.08 265);
+  --primary-foreground: oklch(0.99 0.005 var(--brand-hue));
+  --secondary: oklch(0.96 0.015 var(--brand-hue));
+  --secondary-foreground: oklch(0.28 0.06 var(--brand-hue));
+
+  /* Accent = warm gold. The "twist" on the UofT palette. */
+  --accent: oklch(0.88 0.13 80);
+  --accent-foreground: oklch(0.32 0.1 60);
+  --muted: oklch(0.96 0.012 var(--brand-hue));
+  --muted-foreground: oklch(0.48 0.03 var(--brand-hue));
+
+  --destructive: oklch(0.577 0.18 27);
+  --border: oklch(0.9 0.02 var(--brand-hue));
+  --input: oklch(0.9 0.02 var(--brand-hue));
+  --ring: oklch(0.35 0.08 265);
+
+  /* Charts: UofT blue family + gold + accents. */
+  --chart-1: oklch(0.292 0.085 265);        /* U of T Blue */
+  --chart-2: oklch(0.55 0.13 220);           /* Boundless Blue */
+  --chart-3: oklch(0.78 0.14 80);            /* Gold */
+  --chart-4: oklch(0.45 0.08 200);           /* Slate */
+  --chart-5: oklch(0.65 0.05 265);           /* Light blue */
+
+  --radius: 0.625rem;
+
+  --sidebar: oklch(0.97 0.012 var(--brand-hue));
+  --sidebar-foreground: oklch(0.18 0.03 var(--brand-hue));
+  --sidebar-primary: oklch(0.292 0.085 265);
+  --sidebar-primary-foreground: oklch(0.99 0.005 var(--brand-hue));
+  --sidebar-accent: oklch(0.88 0.13 80);
+  --sidebar-accent-foreground: oklch(0.32 0.1 60);
+  --sidebar-border: oklch(0.9 0.02 var(--brand-hue));
+  --sidebar-ring: oklch(0.4 0.1 265);
 }
 
 @layer base {

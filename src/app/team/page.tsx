@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 
 import contentData from "../../../public/config/content.json";
 import { getAssetPath } from "@/lib/utils";
+import { pad2 } from "@/lib/section-numbering";
 
 export const metadata: Metadata = {
   title: contentData.team.pageTitle,
@@ -40,7 +41,7 @@ function MemberRow({ index, member }: { index: number; member: Member }) {
   return (
     <article className="grid grid-cols-12 items-start gap-x-6 gap-y-3 border-t border-border py-7 sm:py-8">
       <span className="col-span-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:col-span-1">
-        {String(index + 1).padStart(2, "0")}
+        {pad2(index + 1)}
       </span>
 
       {hasImage && (
@@ -116,14 +117,23 @@ function MemberRow({ index, member }: { index: number; member: Member }) {
   );
 }
 
+type RoleSectionCopy = {
+  membersDash: string;
+  membersCountSingular: string;
+  membersCountPlural: string;
+  emptyRoleMessage: string;
+};
+
 function RoleSection({
   index,
   role,
   members,
+  copy,
 }: {
   index: number;
   role: string;
   members: Member[];
+  copy: RoleSectionCopy;
 }) {
   return (
     <section className="border-t border-border">
@@ -131,20 +141,22 @@ function RoleSection({
         <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-border pb-4">
           <div className="flex items-baseline gap-4">
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              {String(index).padStart(2, "0")}
+              {pad2(index)}
             </span>
             <h2 className="font-heading text-2xl font-medium tracking-[-0.025em] text-foreground sm:text-3xl">
               {role}
             </h2>
           </div>
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-            {members.length === 0 ? "—" : `${members.length} members`}
+            {members.length === 0
+              ? copy.membersDash
+              : `${members.length} ${members.length === 1 ? copy.membersCountSingular : copy.membersCountPlural}`}
           </span>
         </div>
 
         {members.length === 0 ? (
           <p className="py-8 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-            Open positions · announcements coming soon
+            {copy.emptyRoleMessage}
           </p>
         ) : (
           <div>
@@ -168,7 +180,7 @@ export default function TeamPage() {
     focus: `${professor.department} · ${professor.institution}`,
     imagePath: professor.imagePath,
     links: professor.website
-      ? [{ label: "Homepage", url: professor.website }]
+      ? [{ label: team.homepageLinkLabel, url: professor.website }]
       : [],
   };
 
@@ -184,15 +196,15 @@ export default function TeamPage() {
         <div className="mx-auto w-full max-w-6xl px-5 pt-16 pb-16 sm:px-8 sm:pt-24 sm:pb-20">
           <div className="mb-10 flex flex-wrap items-center gap-x-6 gap-y-2 border-b border-border pb-4">
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              Roster · {new Date().getFullYear()}
+              {`${team.heroRosterWord} · ${new Date().getFullYear()}`}
             </span>
             <span className="hidden h-3 w-px bg-border sm:block" />
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              {totalMembers} active members
+              {`${totalMembers} ${totalMembers === 1 ? team.activeMembersWordSingular : team.activeMembersWordPlural}`}
             </span>
             <span className="hidden h-3 w-px bg-border sm:block" />
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              {team.sections.length + 1} sections
+              {`${team.sections.length + 1} ${(team.sections.length + 1) === 1 ? team.sectionsCountSingular : team.sectionsCountPlural}`}
             </span>
           </div>
 
@@ -208,7 +220,17 @@ export default function TeamPage() {
       </section>
 
       {/* Principal Investigator */}
-      <RoleSection index={1} role="Principal Investigator" members={[pi]} />
+      <RoleSection
+        index={1}
+        role={team.principalInvestigatorRole}
+        members={[pi]}
+        copy={{
+          membersDash: team.membersDash,
+          membersCountSingular: team.membersCountSingular,
+          membersCountPlural: team.membersCountPlural,
+          emptyRoleMessage: team.emptyRoleMessage,
+        }}
+      />
 
       {/* Other role sections */}
       {team.sections.map((section, idx) => (
@@ -217,6 +239,12 @@ export default function TeamPage() {
           index={idx + 2}
           role={section.role}
           members={(section.members ?? []) as Member[]}
+          copy={{
+            membersDash: team.membersDash,
+            membersCountSingular: team.membersCountSingular,
+            membersCountPlural: team.membersCountPlural,
+            emptyRoleMessage: team.emptyRoleMessage,
+          }}
         />
       ))}
 
@@ -226,7 +254,7 @@ export default function TeamPage() {
           <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-border pb-4">
             <div className="flex items-baseline gap-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                {String(team.sections.length + 2).padStart(2, "0")}
+                {pad2(team.sections.length + 2)}
               </span>
               <h2 className="font-heading text-2xl font-medium tracking-[-0.025em] text-foreground sm:text-3xl">
                 {team.alumni.title}
@@ -234,14 +262,14 @@ export default function TeamPage() {
             </div>
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
               {((team.alumni.members ?? []) as AlumniMember[]).length === 0
-                ? "—"
-                : `${(team.alumni.members ?? []).length} alumni`}
+                ? team.membersDash
+                : `${(team.alumni.members ?? []).length} ${(team.alumni.members ?? []).length === 1 ? team.alumniCountSingular : team.alumniCountPlural}`}
             </span>
           </div>
 
           {((team.alumni.members ?? []) as AlumniMember[]).length === 0 ? (
             <p className="py-8 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-              List will be updated as graduates move on
+              {team.emptyAlumniMessage}
             </p>
           ) : (
             <ul className="border-t border-border">
@@ -251,7 +279,7 @@ export default function TeamPage() {
                   className="grid grid-cols-12 items-baseline gap-x-4 gap-y-1 border-b border-border py-5 sm:py-6"
                 >
                   <span className="col-span-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:col-span-1">
-                    {String(i + 1).padStart(2, "0")}
+                    {pad2(i + 1)}
                   </span>
                   <div className="col-span-10 sm:col-span-5">
                     <p className="font-heading text-base font-medium tracking-[-0.015em] text-foreground">

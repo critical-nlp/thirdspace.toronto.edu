@@ -15,6 +15,7 @@ import type { Metadata } from "next";
 
 import { Button } from "@/components/ui/button";
 import { getAssetPath } from "@/lib/utils";
+import { pad2, eyebrow } from "@/lib/section-numbering";
 import contentData from "../../../public/config/content.json";
 
 export const metadata: Metadata = {
@@ -38,8 +39,8 @@ export default function AboutPage() {
     methodsValue: aboutPage.heroMethodsValue,
     focusLabel: aboutPage.heroFocusLabel,
     focusValue: aboutPage.heroFocusValue,
-    groupPhotoPath: "/group-photos/group_photo_crp.PNG",
-    groupPhotoAlt: "Third Space research group photo",
+    groupPhotoPath: aboutPage.heroGroupPhotoPath,
+    groupPhotoAlt: aboutPage.heroGroupPhotoAlt,
   };
 
   return (
@@ -170,7 +171,7 @@ export default function AboutPage() {
             </span>
             <span className="hidden h-3 w-px bg-border sm:block" />
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              Vol. 01 · University of Toronto
+              {aboutPage.metaVolLine}
             </span>
           </div>
 
@@ -191,7 +192,7 @@ export default function AboutPage() {
           <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-border pb-4">
             <div className="flex items-baseline gap-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                01
+                {pad2(1)}
               </span>
               <h2 className="font-heading text-2xl font-medium tracking-[-0.025em] text-foreground sm:text-3xl">
                 {aboutPage.missionTitle}
@@ -212,14 +213,14 @@ export default function AboutPage() {
           <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-border pb-4">
             <div className="flex items-baseline gap-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                02
+                {pad2(2)}
               </span>
               <h2 className="font-heading text-2xl font-medium tracking-[-0.025em] text-foreground sm:text-3xl">
                 {aboutPage.approachTitle}
               </h2>
             </div>
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              {aboutPage.approachItems?.length ?? 0} methods
+              {`${aboutPage.approachItems?.length ?? 0} ${(aboutPage.approachItems?.length ?? 0) === 1 ? aboutPage.methodsCountSingular : aboutPage.methodsCountPlural}`}
             </span>
           </div>
 
@@ -235,7 +236,7 @@ export default function AboutPage() {
                   className="grid grid-cols-12 gap-x-6 gap-y-2 border-b border-border py-7 sm:py-8"
                 >
                   <span className="col-span-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:col-span-1">
-                    {String(i + 1).padStart(2, "0")}
+                    {pad2(i + 1)}
                   </span>
                   <div className="col-span-10 sm:col-span-3">
                     <h3 className="font-heading text-base font-medium tracking-[-0.015em] text-foreground">
@@ -258,7 +259,7 @@ export default function AboutPage() {
           <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-border pb-4">
             <div className="flex items-baseline gap-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                03
+                {pad2(3)}
               </span>
               <h2 className="font-heading text-2xl font-medium tracking-[-0.025em] text-foreground sm:text-3xl">
                 {aboutPage.storyTitle}
@@ -270,7 +271,7 @@ export default function AboutPage() {
               <div className="flex items-center gap-2 text-primary">
                 <Quote className="size-4" />
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em]">
-                  Field notes
+                  {aboutPage.fieldNotesLabel}
                 </span>
               </div>
             </div>
@@ -283,7 +284,7 @@ export default function AboutPage() {
               href="/contact"
               className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-foreground transition-colors hover:text-primary"
             >
-              Get in touch
+              {aboutPage.getInTouchLabel}
               <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
@@ -295,7 +296,7 @@ export default function AboutPage() {
         <div className="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
           <div className="mb-10 border-b border-border pb-4">
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              04 · Affiliations
+              {`${pad2(4)} · ${aboutPage.affiliationsEyebrow}`}
             </span>
           </div>
 

@@ -7,6 +7,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { pad2, eyebrow } from "@/lib/section-numbering";
 import contentData from "../../../public/config/content.json";
 
 export const metadata: Metadata = {
@@ -28,7 +29,7 @@ export default function ContactPage() {
             </span>
             <span className="hidden h-3 w-px bg-border sm:block" />
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              Response time · 3–5 working days
+              {contact.responseTime}
             </span>
           </div>
 
@@ -49,10 +50,10 @@ export default function ContactPage() {
           <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-border pb-4">
             <div className="flex items-baseline gap-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                01
+                {pad2(1)}
               </span>
               <h2 className="font-heading text-2xl font-medium tracking-[-0.025em] text-foreground sm:text-3xl">
-                Direct channels
+                {contact.sections.directChannels}
               </h2>
             </div>
           </div>
@@ -61,7 +62,7 @@ export default function ContactPage() {
             {/* Email */}
             <li className="grid grid-cols-12 items-baseline gap-x-6 gap-y-3 border-b border-border py-7 sm:py-8">
               <span className="col-span-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:col-span-1">
-                01
+                {pad2(1)}
               </span>
               <div className="col-span-10 flex items-center gap-3 sm:col-span-3">
                 <Mail className="size-4 shrink-0 text-primary" />
@@ -82,12 +83,12 @@ export default function ContactPage() {
             {/* Office */}
             <li className="grid grid-cols-12 items-baseline gap-x-6 gap-y-3 border-b border-border py-7 sm:py-8">
               <span className="col-span-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:col-span-1">
-                02
+                {pad2(2)}
               </span>
               <div className="col-span-10 flex items-center gap-3 sm:col-span-3">
                 <MapPin className="size-4 shrink-0 text-primary" />
                 <h3 className="font-heading text-base font-medium tracking-[-0.015em] text-foreground">
-                  Office
+                  {contact.rows.office.label}
                 </h3>
               </div>
               <div className="col-span-12 sm:col-span-8">
@@ -142,11 +143,11 @@ export default function ContactPage() {
             {/* Lead */}
             <li className="grid grid-cols-12 items-baseline gap-x-6 gap-y-3 border-b border-border py-7 sm:py-8">
               <span className="col-span-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:col-span-1">
-                03
+                {pad2(3)}
               </span>
               <div className="col-span-10 sm:col-span-3">
                 <h3 className="font-heading text-base font-medium tracking-[-0.015em] text-foreground">
-                  Principal Investigator
+                  {contact.rows.principalInvestigator.label}
                 </h3>
               </div>
               <div className="col-span-12 sm:col-span-8">
@@ -161,7 +162,7 @@ export default function ContactPage() {
                     rel="noreferrer"
                     className="mt-3 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.22em] text-primary underline decoration-primary/40 decoration-1 underline-offset-[5px] transition-colors hover:decoration-primary"
                   >
-                    Personal site
+                    {contact.personalSiteLabel}
                     <ArrowUpRight className="size-3" />
                   </Link>
                 )}
@@ -177,10 +178,10 @@ export default function ContactPage() {
           <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-border pb-4">
             <div className="flex items-baseline gap-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                02
+                {pad2(2)}
               </span>
               <h2 className="font-heading text-2xl font-medium tracking-[-0.025em] text-foreground sm:text-3xl">
-                Find us online
+                {contact.sections.findUsOnline}
               </h2>
             </div>
           </div>
@@ -189,7 +190,7 @@ export default function ContactPage() {
             {socials.xUrl && (
               <li className="flex items-center justify-between gap-4 border-b border-border py-5">
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                  Twitter / X
+                  {contact.onlineChannels.twitter}
                 </span>
                 <Link
                   href={socials.xUrl}
@@ -205,7 +206,7 @@ export default function ContactPage() {
             {socials.email && (
               <li className="flex items-center justify-between gap-4 border-b border-border py-5">
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                  Email
+                  {contact.onlineChannels.email}
                 </span>
                 <Link
                   href={`mailto:${socials.email}`}
@@ -225,10 +226,10 @@ export default function ContactPage() {
           <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-border pb-4">
             <div className="flex items-baseline gap-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                03
+                {pad2(3)}
               </span>
               <h2 className="font-heading text-2xl font-medium tracking-[-0.025em] text-foreground sm:text-3xl">
-                {contact.connectTitle}
+                {contact.sections.workingWithUs}
               </h2>
             </div>
           </div>
@@ -236,11 +237,11 @@ export default function ContactPage() {
             {contact.connectBody}
           </p>
           <div className="mt-12 flex flex-wrap gap-x-8 gap-y-3 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-            <span>Prospective students</span>
+            <span>{contact.audienceTags.prospectiveStudents}</span>
             <span aria-hidden className="h-3 w-px bg-border" />
-            <span>Visiting researchers</span>
+            <span>{contact.audienceTags.visitingResearchers}</span>
             <span aria-hidden className="h-3 w-px bg-border" />
-            <span>Community partners</span>
+            <span>{contact.audienceTags.communityPartners}</span>
           </div>
         </div>
       </section>

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import contentData from "../../../public/config/content.json";
 import { getAssetPath } from "@/lib/utils";
+import { pad2, letterSection } from "@/lib/section-numbering";
 
 export const metadata: Metadata = {
   title: contentData.publications.pageTitle,
@@ -38,7 +39,7 @@ type Book = {
   coverImagePath?: string;
 };
 
-function PubRow({ pub }: { pub: Pub }) {
+function PubRow({ pub, rowTypeLabel, articlePrefix, doiPrefix }: { pub: Pub; rowTypeLabel: string; articlePrefix: string; doiPrefix: string }) {
   const titleEl = pub.url ? (
     <Link
       href={pub.url}
@@ -59,7 +60,7 @@ function PubRow({ pub }: { pub: Pub }) {
         {pub.title && (
           <p className="mt-1">
             <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-              Paper ·{" "}
+              {rowTypeLabel}{" "}
             </span>
             {titleEl}
           </p>
@@ -69,7 +70,7 @@ function PubRow({ pub }: { pub: Pub }) {
         )}
         {(pub.pages || pub.articleNumber) && (
           <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-            {[pub.pages, pub.articleNumber && `Article ${pub.articleNumber}`]
+            {[pub.pages, pub.articleNumber && `${articlePrefix} ${pub.articleNumber}`]
               .filter(Boolean)
               .join(" · ")}
           </p>
@@ -83,7 +84,7 @@ function PubRow({ pub }: { pub: Pub }) {
             rel="noreferrer"
             className="font-mono text-[10px] uppercase tracking-[0.18em] text-primary underline decoration-primary/30 decoration-1 underline-offset-[5px] transition-colors hover:decoration-primary"
           >
-            doi:{pub.doi}
+            {doiPrefix}{pub.doi}
           </Link>
         )}
         {pub.url && (
@@ -104,9 +105,19 @@ function PubRow({ pub }: { pub: Pub }) {
 function PubSubsection({
   title,
   entries,
+  rowTypeLabel,
+  articlePrefix,
+  doiPrefix,
+  entriesCountSingular,
+  entriesCountPlural,
 }: {
   title: string;
   entries?: Pub[];
+  rowTypeLabel: string;
+  articlePrefix: string;
+  doiPrefix: string;
+  entriesCountSingular: string;
+  entriesCountPlural: string;
 }) {
   if (!entries || entries.length === 0) return null;
   return (
@@ -116,23 +127,29 @@ function PubSubsection({
           {title}
         </h3>
         <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-          {entries.length} entries
+          {`${entries.length} ${entries.length === 1 ? entriesCountSingular : entriesCountPlural}`}
         </span>
       </div>
       <ul>
         {entries.map((p, i) => (
-          <PubRow key={p.id ?? `${title}-${i}`} pub={p} />
+          <PubRow
+            key={p.id ?? `${title}-${i}`}
+            pub={p}
+            rowTypeLabel={rowTypeLabel}
+            articlePrefix={articlePrefix}
+            doiPrefix={doiPrefix}
+          />
         ))}
       </ul>
     </div>
   );
 }
 
-function BookRow({ book, index }: { book: Book; index: number }) {
+function BookRow({ book, index, bookCoverPlaceholder }: { book: Book; index: number; bookCoverPlaceholder: string }) {
   return (
     <article className="grid grid-cols-12 items-start gap-x-6 gap-y-3 border-t border-border py-7 sm:py-8">
       <span className="col-span-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground sm:col-span-1">
-        {String(index + 1).padStart(2, "0")}
+        {pad2(index + 1)}
       </span>
 
       {book.coverImagePath ? (
@@ -151,7 +168,7 @@ function BookRow({ book, index }: { book: Book; index: number }) {
         <div className="col-span-10 sm:col-span-2">
           <div className="flex aspect-[3/4] w-20 items-center justify-center bg-muted sm:w-24">
             <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground">
-              Book
+              {bookCoverPlaceholder}
             </span>
           </div>
         </div>
@@ -215,7 +232,7 @@ export default function PublicationsPage() {
             </span>
             <span className="hidden h-3 w-px bg-border sm:block" />
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              Index · {yearKeys.length} {yearKeys.length === 1 ? "year" : "years"}
+              {`${publications.indexWord} · ${yearKeys.length} ${yearKeys.length === 1 ? publications.yearSingular : publications.yearPlural}`}
             </span>
           </div>
 
@@ -224,8 +241,7 @@ export default function PublicationsPage() {
               {publications.pageHeadline}
             </h1>
             <p className="max-w-prose text-pretty text-base leading-7 text-muted-foreground lg:col-span-4 lg:pt-3">
-              Books, journal articles, conference proceedings, and research
-              artifacts from the Thirdspace group, indexed by year.
+              {publications.pageSubhead}
             </p>
           </div>
         </div>
@@ -238,19 +254,24 @@ export default function PublicationsPage() {
             <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-border pb-4">
               <div className="flex items-baseline gap-4">
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                  A · Books
+                  {`${letterSection(0)} · ${publications.sectionLabel}`}
                 </span>
                 <h2 className="font-heading text-2xl font-medium tracking-[-0.025em] text-foreground sm:text-3xl">
-                  Monographs
+                  {publications.sectionMonographTitle}
                 </h2>
               </div>
               <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                {books.length} {books.length === 1 ? "title" : "titles"}
+                {`${books.length} ${books.length === 1 ? publications.titlesCountSingular : publications.titlesCountPlural}`}
               </span>
             </div>
             <div>
               {books.map((book, i) => (
-                <BookRow key={`${book.title}-${i}`} book={book} index={i} />
+                <BookRow
+                  key={`${book.title}-${i}`}
+                  book={book}
+                  index={i}
+                  bookCoverPlaceholder={publications.bookCoverPlaceholder}
+                />
               ))}
             </div>
           </div>
@@ -272,31 +293,51 @@ export default function PublicationsPage() {
               <div className="mb-10 flex items-baseline justify-between gap-6 border-b border-border pb-4">
                 <div className="flex items-baseline gap-4">
                   <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                    {String.fromCharCode(66 + idx)} · Year
+                    {`${letterSection(idx + 1)} · ${publications.sectionTitleTemplate}`}
                   </span>
                   <h2 className="font-heading text-3xl font-medium tracking-[-0.03em] text-foreground sm:text-5xl">
                     {bucket.label ?? year}
                   </h2>
                 </div>
                 <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                  {total} {total === 1 ? "entry" : "entries"}
+                  {`${total} ${total === 1 ? publications.entriesCountSingular : publications.entriesCountPlural}`}
                 </span>
               </div>
               <PubSubsection
-                title="Journal Articles"
+                title={publications.subsectionTitles.journalArticles}
                 entries={bucket.journalArticles}
+                rowTypeLabel={publications.rowTypeLabel}
+                articlePrefix={publications.articlePrefix}
+                doiPrefix={publications.doiPrefix}
+                entriesCountSingular={publications.entriesCountSingular}
+                entriesCountPlural={publications.entriesCountPlural}
               />
               <PubSubsection
-                title="Conference Proceedings"
+                title={publications.subsectionTitles.conferenceProceedings}
                 entries={bucket.conferenceProceedings}
+                rowTypeLabel={publications.rowTypeLabel}
+                articlePrefix={publications.articlePrefix}
+                doiPrefix={publications.doiPrefix}
+                entriesCountSingular={publications.entriesCountSingular}
+                entriesCountPlural={publications.entriesCountPlural}
               />
               <PubSubsection
-                title="Extended Abstracts"
+                title={publications.subsectionTitles.extendedAbstracts}
                 entries={bucket.extendedAbstracts}
+                rowTypeLabel={publications.rowTypeLabel}
+                articlePrefix={publications.articlePrefix}
+                doiPrefix={publications.doiPrefix}
+                entriesCountSingular={publications.entriesCountSingular}
+                entriesCountPlural={publications.entriesCountPlural}
               />
               <PubSubsection
-                title="Research Artifacts"
+                title={publications.subsectionTitles.researchArtifacts}
                 entries={bucket.researchArtifacts}
+                rowTypeLabel={publications.rowTypeLabel}
+                articlePrefix={publications.articlePrefix}
+                doiPrefix={publications.doiPrefix}
+                entriesCountSingular={publications.entriesCountSingular}
+                entriesCountPlural={publications.entriesCountPlural}
               />
             </div>
           </section>
@@ -307,7 +348,7 @@ export default function PublicationsPage() {
       {books.length === 0 && yearKeys.length === 0 && (
         <section className="mx-auto w-full max-w-4xl px-6 pb-24 pt-12">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-            No publications indexed yet — check back soon.
+            {publications.emptyMessage}
           </p>
         </section>
       )}

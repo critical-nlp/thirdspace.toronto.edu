@@ -93,10 +93,14 @@ function MenuToggle({
   open,
   onClick,
   brandName,
+  menuOpenLabel,
+  menuCloseLabel,
 }: {
   open: boolean;
   onClick: () => void;
   brandName: string;
+  menuOpenLabel: string;
+  menuCloseLabel: string;
 }) {
   return (
     <button
@@ -127,7 +131,7 @@ function MenuToggle({
         aria-hidden
         className="font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground transition-colors group-hover:text-foreground"
       >
-        {open ? "Close" : "Menu"}
+        {open ? menuCloseLabel : menuOpenLabel}
       </span>
     </button>
   );
@@ -143,11 +147,15 @@ function MobileLinks({
   pathname,
   onNavigate,
   brandName,
+  mobileDrawerUniversity,
+  mobileFooterLine,
 }: {
   links: NavLink[];
   pathname: string;
   onNavigate: () => void;
   brandName: string;
+  mobileDrawerUniversity: string;
+  mobileFooterLine: string;
 }) {
   return (
     <div className="flex h-full flex-col">
@@ -156,7 +164,7 @@ function MobileLinks({
           {brandName}
         </SheetTitle>
         <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-          University of Toronto
+          {mobileDrawerUniversity}
         </p>
       </SheetHeader>
       <nav
@@ -214,7 +222,7 @@ function MobileLinks({
       </nav>
       <div className="border-t border-border px-6 py-5">
         <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-          Thirdspace · est. 2018
+          {mobileFooterLine}
         </p>
       </div>
     </div>
@@ -245,6 +253,8 @@ export function Navbar() {
             open={open}
             onClick={() => setOpen((o) => !o)}
             brandName={navbar.brandName}
+            menuOpenLabel={navbar.menuOpenLabel}
+            menuCloseLabel={navbar.menuCloseLabel}
           />
           <SheetContent
             side="right"
@@ -256,6 +266,8 @@ export function Navbar() {
               pathname={pathname}
               onNavigate={() => setOpen(false)}
               brandName={navbar.brandName}
+              mobileDrawerUniversity={navbar.mobileDrawerUniversity}
+              mobileFooterLine={navbar.mobileFooterLine}
             />
           </SheetContent>
         </Sheet>

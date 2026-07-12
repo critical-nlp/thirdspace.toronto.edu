@@ -20,6 +20,7 @@ import {
 
 import contentData from "../../public/config/content.json";
 import { getAssetPath } from "@/lib/utils";
+import { pad2, eyebrow, figLabel } from "@/lib/section-numbering";
 
 type IconName =
   | "Users"
@@ -45,11 +46,13 @@ const iconMap: Record<IconName, React.ComponentType<{ className?: string }>> = {
 export default function Home() {
   const {
     hero,
+    home,
     marquee,
     groupOverview,
     professor,
     researchDomains,
     about,
+    homePillars,
     pillars,
   } = contentData;
 
@@ -71,7 +74,7 @@ export default function Home() {
             </span>
             <span className="hidden h-3 w-px bg-border sm:block" />
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              Vol. 01 · 2026
+              {`${home.metaVolPrefix} ${home.metaVolNumber} · ${home.metaVolYear}`}
             </span>
           </div>
           {/* Headline + lede */}
@@ -123,7 +126,7 @@ export default function Home() {
                 />
               </div>
               <figcaption className="mt-3 flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                <span>Fig. 01 · {hero.groupPhotoAlt}</span>
+                <span>{figLabel(hero.figPrefix, 1)} · {hero.groupPhotoAlt}</span>
                 <span>{hero.locationChip}</span>
               </figcaption>
             </div>
@@ -189,7 +192,7 @@ export default function Home() {
                 <div className="mb-7 flex flex-wrap items-center justify-between gap-4 border-b border-border/80 pb-5">
                   <div>
                     <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                      01 · {groupOverview.eyebrow}
+                      {eyebrow(1, groupOverview.eyebrow)}
                     </span>
                     <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-foreground md:text-3xl">
                       {groupOverview.headline}
@@ -262,7 +265,7 @@ export default function Home() {
                               <Icon className="h-4 w-4" />
                             </div>
                             <span className="rounded-full border border-border bg-muted/70 px-2.5 py-1 font-mono text-[0.58rem] uppercase tracking-[0.2em] text-muted-foreground">
-                              0{index + 1} / {item.label}
+                              {pad2(index + 1)} / {item.label}
                             </span>
                           </div>
 
@@ -304,7 +307,7 @@ export default function Home() {
                     <div className="flex items-end justify-between gap-4">
                       <div>
                         <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-primary-foreground/70">
-                          <span>Fig. 02 · {professor.title}</span>
+                          <span>{figLabel(hero.figPrefix, 2)} · {home.groupOverviewFigLabel}</span>
                         </p>
                         <p className="mt-1 text-xl font-semibold tracking-[-0.03em]">
                           {professor.name}
@@ -330,7 +333,7 @@ export default function Home() {
             <div className="flex items-center gap-3 border-b border-border pb-4">
               <Quote className="size-4 text-primary" />
               <h2 className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                02 · {about.title}
+                {eyebrow(2, about.title)}
               </h2>
             </div>
             <p className="mt-10 max-w-3xl border-l border-primary pl-6 font-heading text-2xl font-medium leading-snug tracking-[-0.025em] text-foreground sm:text-3xl">
@@ -356,7 +359,7 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <Cpu className="size-3.5 text-primary" />
               <h2 className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                03 · {researchDomains.sectionLabel}
+                {eyebrow(3, researchDomains.sectionLabel)}
               </h2>
             </div>
             <span className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
@@ -389,7 +392,7 @@ export default function Home() {
                       </div>
                     </div>
                     <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                      {String(index + 1).padStart(2, "0")}
+                      {pad2(index + 1)}
                     </span>
                   </div>
                 </li>
@@ -404,7 +407,7 @@ export default function Home() {
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
           <div className="mb-12 border-b border-border pb-4">
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-              04 · Three pillars
+              {eyebrow(4, homePillars.eyebrow)}
             </span>
           </div>
 
@@ -419,7 +422,7 @@ export default function Home() {
                   <div className="flex items-center justify-between">
                     <Icon className="size-4 text-primary" />
                     <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                      {String(index + 1).padStart(2, "0")}
+                      {pad2(index + 1)}
                     </span>
                   </div>
                   <h3 className="mt-10 font-heading text-xl font-medium tracking-[-0.02em] text-foreground">

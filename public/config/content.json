@@ -8,6 +8,10 @@
     "brandName": "Thirdspace",
     "brandTagline": "UofT",
     "brandLogoAlt": "University of Toronto",
+    "mobileFooterLine": "Thirdspace · est. 2018",
+    "mobileDrawerUniversity": "University of Toronto",
+    "menuOpenLabel": "Menu",
+    "menuCloseLabel": "Close",
     "links": [
       { "label": "Home", "href": "/" },
       { "label": "Team", "href": "/team" },
@@ -34,7 +38,16 @@
     "focusLabel": "Focus",
     "focusValue": "Margins, agency, and global development",
     "groupPhotoPath": "/group-photos/group_photo_crp.PNG",
-    "groupPhotoAlt": "Third Space research group photo"
+    "groupPhotoAlt": "Third Space research group photo",
+    "figPrefix": "Fig.",
+    "figGroupAlt": "Group portrait"
+  },
+  "home": {
+    "metaVolPrefix": "Vol.",
+    "metaVolNumber": "01",
+    "metaVolYear": "2026",
+    "figGroupPrefix": "Group portrait",
+    "groupOverviewFigLabel": "Principal Investigator"
   },
   "marquee": {
     "keywords": [
@@ -133,6 +146,59 @@
     "ctaLabel": "Read full story",
     "ctaHref": "/about"
   },
+  "homePillars": {
+    "eyebrow": "Three pillars"
+  },
+  "team": {
+    "pageTitle": "Team — Thirdspace | University of Toronto",
+    "pageEyebrow": "Our people",
+    "pageHeadline": "Researchers, students, and collaborators.",
+    "pageBody": "The Thirdspace group brings together faculty, postdocs, graduate students, and undergraduates who study the social, ethical, and political dimensions of computing and AI.",
+    "sections": [
+      {
+        "role": "Postdoctoral Fellow",
+        "members": []
+      },
+      {
+        "role": "PhD Students",
+        "members": []
+      },
+      {
+        "role": "MSc Students",
+        "members": []
+      },
+      {
+        "role": "Undergraduate Students",
+        "members": []
+      },
+      {
+        "role": "Collaborators",
+        "members": []
+      },
+      {
+        "role": "Research Staff",
+        "members": []
+      }
+    ],
+    "alumni": {
+      "title": "Lab Alumni",
+      "members": []
+    },
+    "principalInvestigatorRole": "Principal Investigator",
+    "heroRosterWord": "Roster",
+    "activeMembersWordSingular": "active member",
+    "activeMembersWordPlural": "active members",
+    "sectionsCountSingular": "section",
+    "sectionsCountPlural": "sections",
+    "membersCountSingular": "member",
+    "membersCountPlural": "members",
+    "membersDash": "—",
+    "alumniCountSingular": "alumnus",
+    "alumniCountPlural": "alumni",
+    "emptyRoleMessage": "Open positions · announcements coming soon",
+    "emptyAlumniMessage": "List will be updated as graduates move on",
+    "homepageLinkLabel": "Homepage"
+  },
   "pillars": [
     {
       "id": "pillar-community",
@@ -207,54 +273,44 @@
     "copyrightSuffix": "— University of Toronto.",
     "footerDescription": "Through empirical and design-oriented research, the group develops and studies socio-technical systems that support more responsible, participatory, and context-aware forms of AI and digital technologies. Led by Prof. Ishtiaque Ahmed at the University of Toronto."
   },
-  "team": {
-    "pageTitle": "Team — Thirdspace | University of Toronto",
-    "pageEyebrow": "Our people",
-    "pageHeadline": "Researchers, students, and collaborators.",
-    "pageBody": "The Thirdspace group brings together faculty, postdocs, graduate students, and undergraduates who study the social, ethical, and political dimensions of computing and AI.",
-    "sections": [
-      {
-        "role": "Postdoctoral Fellow",
-        "members": []
-      },
-      {
-        "role": "PhD Students",
-        "members": []
-      },
-      {
-        "role": "MSc Students",
-        "members": []
-      },
-      {
-        "role": "Undergraduate Students",
-        "members": []
-      },
-      {
-        "role": "Collaborators",
-        "members": []
-      },
-      {
-        "role": "Research Staff",
-        "members": []
-      }
-    ],
-    "alumni": {
-      "title": "Lab Alumni",
-      "members": []
-    }
-  },
   "publications": {
     "pageTitle": "Publications — Thirdspace | University of Toronto",
     "pageEyebrow": "Publications",
     "pageHeadline": "Books, journal articles, and conference proceedings.",
+    "pageSubhead": "Books, journal articles, conference proceedings, and research artifacts from the Thirdspace group, indexed by year.",
     "books": [],
-    "years": {}
+    "years": {},
+    "sectionLabel": "Books",
+    "sectionMonographTitle": "Monographs",
+    "sectionTitleTemplate": "Year",
+    "subsectionTitles": {
+      "journalArticles": "Journal Articles",
+      "conferenceProceedings": "Conference Proceedings",
+      "extendedAbstracts": "Extended Abstracts",
+      "researchArtifacts": "Research Artifacts"
+    },
+    "rowTypeLabel": "Paper",
+    "doiPrefix": "doi:",
+    "entriesCountSingular": "entry",
+    "entriesCountPlural": "entries",
+    "titlesCountSingular": "title",
+    "titlesCountPlural": "titles",
+    "indexWord": "Index",
+    "yearSingular": "year",
+    "yearPlural": "years",
+    "bookCoverPlaceholder": "Book",
+    "articlePrefix": "Article",
+    "emptyMessage": "No publications indexed yet — check back soon."
   },
   "aboutPage": {
     "pageTitle": "About — Thirdspace | University of Toronto",
     "eyebrow": "About the group",
     "headline": "Studying computing from the margins inward.",
     "subhead": "Founded and led by Prof. Ishtiaque Ahmed at the University of Toronto, Thirdspace is a research group that studies the social, ethical, and political dimensions of computing and artificial intelligence.",
+    "metaVolLine": "Vol. 01 · University of Toronto",
+    "fieldNotesLabel": "Field notes",
+    "getInTouchLabel": "Get in touch",
+    "affiliationsEyebrow": "Affiliations",
     "heroBadge": "Who we are",
     "heroLocationChip": "Toronto / HCI / AI",
     "heroHeadlineLine1": "Listening to the people",
@@ -268,6 +324,10 @@
     "heroMethodsValue": "Ethnography, co-design, and system building",
     "heroFocusLabel": "Focus",
     "heroFocusValue": "Margins, migration, and everyday infrastructure",
+    "heroGroupPhotoPath": "/group-photos/group_photo_crp.PNG",
+    "heroGroupPhotoAlt": "Third Space research group photo",
+    "methodsCountSingular": "method",
+    "methodsCountPlural": "methods",
     "missionTitle": "Our mission",
     "missionBody": "Through empirical and design-oriented research, we develop and study socio-technical systems that support more responsible, participatory, and context-aware forms of AI and digital technologies — particularly with communities too often left outside the room where technology is designed.",
     "approachTitle": "How we work",
@@ -296,6 +356,36 @@
     "body": "Whether you're a prospective student, collaborator, journalist, or community partner — please reach out. We aim to respond within a few working days.",
     "emailLabel": "General inquiries",
     "connectTitle": "Working with us",
-    "connectBody": "We welcome inquiries from prospective graduate students, visiting researchers, and community partners. Due to the volume of requests, we may not be able to reply to every message, but we read each one. For graduate admissions, please apply through the University of Toronto's Department of Computer Science and mention Prof. Ahmed's group in your statement of interest."
+    "connectBody": "We welcome inquiries from prospective graduate students, visiting researchers, and community partners. Due to the volume of requests, we may not be able to reply to every message, but we read each one. For graduate admissions, please apply through the University of Toronto's Department of Computer Science and mention Prof. Ahmed's group in your statement of interest.",
+    "responseTime": "Response time · 3–5 working days",
+    "sections": {
+      "directChannels": "Direct channels",
+      "findUsOnline": "Find us online",
+      "workingWithUs": "Working with us"
+    },
+    "rows": {
+      "email": {
+        "icon": "Mail",
+        "label": "General inquiries"
+      },
+      "office": {
+        "icon": "MapPin",
+        "label": "Office"
+      },
+      "principalInvestigator": {
+        "icon": "User",
+        "label": "Principal Investigator"
+      }
+    },
+    "personalSiteLabel": "Personal site",
+    "onlineChannels": {
+      "twitter": "Twitter / X",
+      "email": "Email"
+    },
+    "audienceTags": {
+      "prospectiveStudents": "Prospective students",
+      "visitingResearchers": "Visiting researchers",
+      "communityPartners": "Community partners"
+    }
   }
 }

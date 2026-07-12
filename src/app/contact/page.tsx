@@ -2,6 +2,11 @@ import Link from "next/link";
 import { ArrowUpRight, Mail, MapPin } from "lucide-react";
 import type { Metadata } from "next";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import contentData from "../../../public/config/content.json";
 
 export const metadata: Metadata = {
@@ -94,15 +99,43 @@ export default function ContactPage() {
                   <br />
                   {location.cityCountry}
                 </p>
-                <Link
-                  href={`https://maps.google.com/?q=${location.mapsQuery}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-3 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.22em] text-primary underline decoration-primary/40 decoration-1 underline-offset-[5px] transition-colors hover:decoration-primary"
-                >
-                  {location.footerMapLabel}
-                  <ArrowUpRight className="size-3" />
-                </Link>
+                <HoverCard openDelay={100} closeDelay={100}>
+                  <HoverCardTrigger asChild>
+                    <Link
+                      href={`https://maps.google.com/?q=${location.mapsQuery}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-3 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.22em] text-primary underline decoration-primary/40 decoration-1 underline-offset-[5px] transition-colors hover:decoration-primary"
+                    >
+                      {location.footerMapLabel}
+                      <ArrowUpRight className="size-3" />
+                    </Link>
+                  </HoverCardTrigger>
+                  <HoverCardContent
+                    side="top"
+                    align="end"
+                    sideOffset={12}
+                    className="w-[280px] sm:w-[320px] p-0 overflow-hidden rounded-xl bg-card border border-border shadow-lg"
+                  >
+                    <div className="relative h-[200px] w-full bg-muted">
+                      <iframe
+                        title={`${location.institution} Location Map`}
+                        src={`https://maps.google.com/maps?q=${location.mapsQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen={false}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        className="absolute inset-0 grayscale contrast-125 opacity-90 transition-opacity hover:opacity-100 duration-300"
+                      />
+                    </div>
+                    <div className="p-3 bg-card border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground">
+                      <span>{location.street}, Toronto</span>
+                      <span className="text-[10px] font-semibold text-primary uppercase">{location.footerMapLabel}</span>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
               </div>
             </li>
 

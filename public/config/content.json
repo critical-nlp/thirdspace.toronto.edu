@@ -97,7 +97,18 @@
     "institution": "University of Toronto",
     "role": "National AI Consultant, UNDP Bangladesh",
     "website": "https://www.ishtiaque.net/",
-    "imagePath": "/headshots/ishtique-ahmed.png"
+    "imagePath": "/headshots/ishtique-ahmed.png",
+    "bio": "Ishtiaque Ahmed is an Associate Professor of Computer Science at the University of Toronto and serves as Associate Director of the Knowledge Media Design Institute (KMDI). He is also affiliated with the University of Toronto's iSchool, Data Sciences Institute, School of the Environment, School of Cities, Institute of Health Emergencies and Pandemics, Acceleration Consortium, and Schwartz Reisman Institute for Technology and Society. In addition, he serves on the University of Toronto's Research Ethics Board (REB) and AI Task Force. Beyond the University of Toronto, he has served as the National AI Consultant for Bangladesh with the United Nations Development Programme (UNDP) and is a member of the MIT Global Humanities Initiative.",
+    "areasOfInterest": [
+      "AI Safety",
+      "AI Governance",
+      "AI Policy",
+      "Human-AI Interaction",
+      "Responsible AI"
+    ],
+    "researchInterests": "Ishtiaque's current research focuses on AI safety, AI governance, AI policy, ethical and responsible AI design, and human–AI interaction. He designs AI tools and services aimed at addressing global challenges in health, sustainability, and peace in a responsible and accountable manner. His work critically examines the ethical foundations of AI systems and explores community-based, participatory approaches to AI development. His research is primarily published in HCI venues such as CHI, CSCW, FAccT, ICTD, DIS, and COMPASS, as well as AI venues including ACL, EACL, ECIR, AAAI, and WWW.",
+    "venueWord": "Website",
+    "profileDetailEyebrow": "Profile"
   },
   "researchDomains": {
     "sectionLabel": "Research Domains",
@@ -161,7 +172,22 @@
       },
       {
         "role": "PhD Students",
-        "members": []
+        "members": [
+          {
+            "name": "Ramaravind K M",
+            "title": "PhD Candidate",
+            "focus": "Faculty of Information · University of Toronto",
+            "imagePath": "/headshots/ramaravind-scaled.jpg",
+            "links": [
+              { "label": "Personal site", "url": "https://ramaravind.com" }
+            ],
+            "profileDetailEyebrow": "Profile",
+            "bio": "Ramaravind is a Ph.D. candidate in the Faculty of Information, a graduate fellow of the Data Sciences Institute (DSI), and a graduate affiliate of the Schwartz Reisman Institute for Technology and Society (SRI) at the University of Toronto. He is co-advised by Prof. Ishtiaque Ahmed and Prof. Shion Guha. He is a member of the Department of Computer Science's Third Space research group, the Dynamics Graphics Project lab, and the iSchool's Human-Centered Data Science Lab.",
+            "areasOfInterest": ["AI Safety and Responsible AI"],
+            "researchInterests": "Ramaravind's research centers on the dual reasoning challenge in AI safety: focusing on both how AI practitioners reason about their own assumptions and decisions, and how LLMs exhibit reasoning-like behaviors in safety-critical contexts. He develops reflective frameworks to surface implicit practitioner assumptions and designs theoretically grounded methods to evaluate LLM reasoning with greater depth than existing benchmarks allow. Situated at the intersection of HCI and NLP, his research combines user studies with insights from sociopolitical and philosophical theories to examine the normative and ambiguous dimensions of AI safety.",
+            "website": "https://ramaravind.com"
+          }
+        ]
       },
       {
         "role": "MSc Students",
@@ -197,7 +223,15 @@
     "alumniCountPlural": "alumni",
     "emptyRoleMessage": "Open positions · announcements coming soon",
     "emptyAlumniMessage": "List will be updated as graduates move on",
-    "homepageLinkLabel": "Homepage"
+    "homepageLinkLabel": "Homepage",
+    "profileDetailNameLabel": "Name",
+    "profileDetailBioLabel": "Bio",
+    "profileDetailAreasLabel": "Areas of interest",
+    "profileDetailResearchLabel": "Research interests",
+    "profileDetailWebsiteLabel": "Website",
+    "profileCloseLabel": "Close",
+    "profileOpenLabel": "View full profile",
+    "piRowBioGlance": "Associate Professor of Computer Science · National AI Consultant, UNDP Bangladesh · Director, KMDI"
   },
   "pillars": [
     {

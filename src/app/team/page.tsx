@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import contentData from "../../../public/config/content.json";
 import { getAssetPath } from "@/lib/utils";
 import { pad2 } from "@/lib/section-numbering";
+import { MemberRowClickable } from "@/components/team/member-row-clickable";
 
 export const metadata: Metadata = {
   title: contentData.team.pageTitle,
@@ -19,6 +20,12 @@ type Member = {
   focus?: string;
   imagePath?: string;
   links?: { label: string; url: string }[];
+  bioGlance?: string;
+  bio?: string;
+  areasOfInterest?: string[];
+  researchInterests?: string;
+  website?: string;
+  profileDetailEyebrow?: string;
 };
 
 type AlumniMember = {
@@ -52,7 +59,7 @@ function MemberRow({ index, member }: { index: number; member: Member }) {
               alt={member.name}
               fill
               sizes="96px"
-              className="object-cover grayscale transition-[filter] duration-500 hover:grayscale-0"
+              className="object-cover"
             />
           </div>
         </div>
@@ -124,16 +131,30 @@ type RoleSectionCopy = {
   emptyRoleMessage: string;
 };
 
+type ProfileLabels = {
+  open: string;
+  name: string;
+  bio: string;
+  areas: string;
+  research: string;
+  website: string;
+  close: string;
+};
+
 function RoleSection({
   index,
   role,
   members,
   copy,
+  profileLabels,
+  defaultProfileEyebrow,
 }: {
   index: number;
   role: string;
   members: Member[];
   copy: RoleSectionCopy;
+  profileLabels: ProfileLabels;
+  defaultProfileEyebrow: string;
 }) {
   return (
     <section className="border-t border-border">
@@ -160,9 +181,33 @@ function RoleSection({
           </p>
         ) : (
           <div>
-            {members.map((m, i) => (
-              <MemberRow key={`${m.name}-${i}`} index={i} member={m} />
-            ))}
+            {members.map((m, i) => {
+              const hasProfile = !!m.bio;
+              const glance = m.bioGlance ?? m.focus;
+              if (hasProfile) {
+                return (
+                  <MemberRowClickable
+                    key={`${m.name}-${i}`}
+                    index={i}
+                    member={{
+                      name: m.name,
+                      title: m.title,
+                      imagePath: m.imagePath,
+                    }}
+                    profile={{
+                      eyebrow: m.profileDetailEyebrow ?? defaultProfileEyebrow,
+                      bio: m.bio,
+                      areasOfInterest: m.areasOfInterest,
+                      researchInterests: m.researchInterests,
+                      website: m.website,
+                    }}
+                    labels={profileLabels}
+                    bioGlance={glance}
+                  />
+                );
+              }
+              return <MemberRow key={`${m.name}-${i}`} index={i} member={m} />;
+            })}
           </div>
         )}
       </div>
@@ -219,18 +264,50 @@ export default function TeamPage() {
         </div>
       </section>
 
-      {/* Principal Investigator */}
-      <RoleSection
-        index={1}
-        role={team.principalInvestigatorRole}
-        members={[pi]}
-        copy={{
-          membersDash: team.membersDash,
-          membersCountSingular: team.membersCountSingular,
-          membersCountPlural: team.membersCountPlural,
-          emptyRoleMessage: team.emptyRoleMessage,
-        }}
-      />
+      {/* Principal Investigator — opens detail dialog on click */}
+      <section className="border-t border-border">
+        <div className="mx-auto w-full max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+          <div className="mb-6 flex items-baseline justify-between gap-6 border-b border-border pb-4">
+            <div className="flex items-baseline gap-4">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                {pad2(1)}
+              </span>
+              <h2 className="font-heading text-2xl font-medium tracking-[-0.025em] text-foreground sm:text-3xl">
+                {team.principalInvestigatorRole}
+              </h2>
+            </div>
+            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+              {`1 ${team.membersCountSingular}`}
+            </span>
+          </div>
+
+          <MemberRowClickable
+            index={0}
+            member={{
+              name: pi.name,
+              title: pi.title,
+              imagePath: pi.imagePath,
+            }}
+            profile={{
+              eyebrow: professor.profileDetailEyebrow,
+              bio: professor.bio,
+              areasOfInterest: professor.areasOfInterest,
+              researchInterests: professor.researchInterests,
+              website: professor.website,
+            }}
+            labels={{
+              open: team.profileOpenLabel,
+              name: team.profileDetailNameLabel,
+              bio: team.profileDetailBioLabel,
+              areas: team.profileDetailAreasLabel,
+              research: team.profileDetailResearchLabel,
+              website: team.profileDetailWebsiteLabel,
+              close: team.profileCloseLabel,
+            }}
+            bioGlance={team.piRowBioGlance}
+          />
+        </div>
+      </section>
 
       {/* Other role sections */}
       {team.sections.map((section, idx) => (
@@ -245,6 +322,16 @@ export default function TeamPage() {
             membersCountPlural: team.membersCountPlural,
             emptyRoleMessage: team.emptyRoleMessage,
           }}
+          profileLabels={{
+            open: team.profileOpenLabel,
+            name: team.profileDetailNameLabel,
+            bio: team.profileDetailBioLabel,
+            areas: team.profileDetailAreasLabel,
+            research: team.profileDetailResearchLabel,
+            website: team.profileDetailWebsiteLabel,
+            close: team.profileCloseLabel,
+          }}
+          defaultProfileEyebrow={professor.profileDetailEyebrow}
         />
       ))}
 

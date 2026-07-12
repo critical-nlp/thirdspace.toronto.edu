@@ -17,9 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Thirdspace — University of Toronto",
-  description:
-    "Thirdspace at the University of Toronto. Student community, events, and resources.",
+  title: contentData.layout.pageTitle,
+  description: contentData.layout.pageDescription,
 };
 
 export const viewport = {
@@ -32,7 +31,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { navbar } = contentData;
+  const { navbar, layout } = contentData;
 
   return (
     <html
@@ -45,7 +44,7 @@ export default function RootLayout({
             <Link
               href="/"
               className="flex items-center shrink-0"
-              aria-label={`${navbar.brandName} — University of Toronto home`}
+              aria-label={`${navbar.brandName} ${layout.homeAriaLabelSuffix}`}
             >
               <BrandMark />
             </Link>

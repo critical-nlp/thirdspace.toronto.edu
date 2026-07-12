@@ -27,7 +27,7 @@ export function BrandMark({ className, variant = "color" }: BrandMarkProps) {
     >
       <img
         src={getAssetPath("/uoft-logo.svg")}
-        alt="University of Toronto"
+        alt={navbar.brandLogoAlt}
         width={150}
         height={40}
         className="h-10 w-auto object-contain shrink-0"

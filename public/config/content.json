@@ -1,17 +1,125 @@
 {
+  "layout": {
+    "pageTitle": "Thirdspace — University of Toronto",
+    "pageDescription": "Thirdspace at the University of Toronto. A research group studying human-computer interaction, AI ethics, and communities at the margins.",
+    "homeAriaLabelSuffix": "— University of Toronto home"
+  },
   "navbar": {
     "brandName": "Thirdspace",
     "brandTagline": "UofT",
+    "brandLogoAlt": "University of Toronto",
     "links": [
       { "label": "Home", "href": "/" }
     ]
   },
   "hero": {
     "badge": "Welcome to ThirdSpace!",
+    "locationChip": "University of Toronto",
+    "headlineLine1": "Utilizing human values,",
+    "headlineLine2": "situated knowledge,",
+    "headlineLine3": "and lived experiences.",
+    "subParagraph": "Building socio-technical systems for responsible, participatory, and context-aware AI with communities too often left outside the room where technology is designed.",
     "title": "Utilizing human values, situated knowledge, and experiences for developing impactful solutions.",
-    "description": "The Third Space research group, led by Prof. Ishtiaque Ahmed at the University of Toronto, studies the social, ethical, and political dimensions of computing and artificial intelligence. The group works at the intersection of human-computer interaction (HCI), AI, and critical computing to understand how technologies shape—and are shaped by—everyday life practices, particularly in contexts of marginalization and global development, centering communities that are often overlooked in mainstream computing research.",
+    "description": "The Third Space research group, led by Prof. Ishtiaque Ahmed at the University of Toronto, studies the social, ethical, and political dimensions of computing and artificial intelligence.",
     "primaryActionText": "Learn More",
-    "secondaryActionText": "Research Group"
+    "secondaryActionText": "Research Group",
+    "researchPostureLabel": "Research posture",
+    "researchPostureBody": "Technology is never neutral; we study who it serves, who it misses, and how it can be remade.",
+    "methodsLabel": "Methods",
+    "methodsValue": "Empirical + design-oriented inquiry",
+    "focusLabel": "Focus",
+    "focusValue": "Margins, agency, and global development"
+  },
+  "marquee": {
+    "keywords": [
+      "AI Ethics",
+      "HCI",
+      "Critical Computing",
+      "Marginalized Communities",
+      "Global Development",
+      "Socio-Technical Systems",
+      "Participatory Design",
+      "Context-Aware AI",
+      "Human Values",
+      "Situated Knowledge"
+    ]
+  },
+  "groupOverview": {
+    "eyebrow": "Third Space Research Group",
+    "headline": "Computing research from the social edge inward.",
+    "locationChip": "Toronto / HCI / AI",
+    "body": "The Third Space research group, led by Prof. Ishtiaque Ahmed at the University of Toronto, studies the social, ethical, and political dimensions of computing and artificial intelligence. The group works at the intersection of human-computer interaction (HCI), AI, and critical computing to understand how technologies shape—and are shaped by—everyday life practices, particularly in contexts of marginalization and global development, centering communities that are often overlooked in mainstream computing research.",
+    "glanceLabel": "Glance",
+    "focusCards": [
+      {
+        "title": "Human-Computer Interaction",
+        "label": "HCI",
+        "description": "Designing with people, practices, and lived contexts.",
+        "icon": "HeartHandshake"
+      },
+      {
+        "title": "AI + Critical Computing",
+        "label": "AI",
+        "description": "Questioning power, ethics, and automated systems.",
+        "icon": "Brain"
+      },
+      {
+        "title": "Communities at the margins",
+        "label": "CARE",
+        "description": "Centering voices mainstream computing often overlooks.",
+        "icon": "Globe"
+      }
+    ]
+  },
+  "professor": {
+    "name": "Prof. Ishtiaque Ahmed",
+    "title": "Associate Professor",
+    "department": "Department of Computer Science",
+    "institution": "University of Toronto",
+    "role": "National AI Consultant, UNDP Bangladesh",
+    "website": "https://www.ishtiaque.net/",
+    "imagePath": "/ishtique-ahmed.png"
+  },
+  "researchDomains": {
+    "sectionLabel": "Research Domains",
+    "statusLabel": "Active",
+    "items": [
+      {
+        "title": "AI & Machine Learning",
+        "description": "Social, ethical, and political dimensions of computing and AI.",
+        "icon": "Brain",
+        "colSpan": "md:col-span-2 md:row-span-2",
+        "accent": "primary"
+      },
+      {
+        "title": "Human-Computer Interaction",
+        "description": "Design-oriented research at the intersection of HCI and AI.",
+        "icon": "HeartHandshake",
+        "colSpan": "md:col-span-2",
+        "accent": "accent"
+      },
+      {
+        "title": "Critical Computing",
+        "description": "Centering communities overlooked in mainstream computing.",
+        "icon": "Globe",
+        "colSpan": "md:col-span-1",
+        "accent": "primary"
+      },
+      {
+        "title": "Empirical Research",
+        "description": "Socio-technical systems for responsible AI.",
+        "icon": "Microscope",
+        "colSpan": "md:col-span-1",
+        "accent": "accent"
+      },
+      {
+        "title": "Ethics & Policy",
+        "description": "How technologies shape everyday life practices.",
+        "icon": "Scale",
+        "colSpan": "md:col-span-2",
+        "accent": "primary"
+      }
+    ]
   },
   "about": {
     "title": "About the Group",
@@ -76,15 +184,19 @@
     "institution": "Bahen Centre for Information Technology",
     "street": "40 St. George Street",
     "cityCountry": "Toronto, ON M5S 2E4, Canada",
-    "mapsQuery": "Bahen+Centre+for+Information+Technology+40+St.+George+St+Toronto+ON+M5S+2E4+Canada"
+    "mapsQuery": "Bahen+Centre+for+Information+Technology+40+St.+George+St+Toronto+ON+M5S+2E4+Canada",
+    "footerMapLabel": "Google Maps",
+    "locationHeading": "Location"
   },
   "socials": {
     "xUrl": "https://x.com/SpaceUoft",
+    "xHandle": "@SpaceUoft",
     "email": "thirdspace@dgp.toronto.edu"
   },
   "brand": {
     "name": "Thirdspace",
     "tagline": "UofT",
+    "copyrightSuffix": "— University of Toronto.",
     "footerDescription": "Through empirical and design-oriented research, the group develops and studies socio-technical systems that support more responsible, participatory, and context-aware forms of AI and digital technologies. Led by Prof. Ishtiaque Ahmed at the University of Toronto."
   }
 }

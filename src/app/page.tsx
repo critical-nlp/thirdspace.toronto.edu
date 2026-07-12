@@ -28,75 +28,26 @@ import {
 } from "lucide-react";
 import contentData from "../../public/config/content.json";
 
-// Map icon names in JSON to Lucide component references
+// Map icon name strings (from JSON) to Lucide component references
 const iconMap = {
   Users: Users,
   Calendar: Calendar,
   Sparkles: Sparkles,
+  Brain: Brain,
+  HeartHandshake: HeartHandshake,
+  Globe: Globe,
+  Microscope: Microscope,
+  Scale: Scale,
 };
 
-// Research keywords for the marquee band
-const researchKeywords = [
-  "AI Ethics",
-  "HCI",
-  "Critical Computing",
-  "Marginalized Communities",
-  "Global Development",
-  "Socio-Technical Systems",
-  "Participatory Design",
-  "Context-Aware AI",
-  "Human Values",
-  "Situated Knowledge",
-];
-
-// Bento grid research domain cards
-const bentoItems = [
-  {
-    icon: Brain,
-    title: "AI & Machine Learning",
-    description:
-      "Social, ethical, and political dimensions of computing and AI.",
-    className: "md:col-span-2 md:row-span-2",
-    accent: "primary",
-  },
-  {
-    icon: HeartHandshake,
-    title: "Human-Computer Interaction",
-    description: "Design-oriented research at the intersection of HCI and AI.",
-    className: "md:col-span-2",
-    accent: "accent",
-  },
-  {
-    icon: Globe,
-    title: "Critical Computing",
-    description: "Centering communities overlooked in mainstream computing.",
-    className: "md:col-span-1",
-    accent: "primary",
-  },
-  {
-    icon: Microscope,
-    title: "Empirical Research",
-    description: "Socio-technical systems for responsible AI.",
-    className: "md:col-span-1",
-    accent: "accent",
-  },
-  {
-    icon: Scale,
-    title: "Ethics & Policy",
-    description: "How technologies shape everyday life practices.",
-    className: "md:col-span-2",
-    accent: "primary",
-  },
-];
-
 export default function Home() {
-  const { hero, pillars, about } = contentData;
+  const { hero, pillars, about, marquee, groupOverview, professor, researchDomains } = contentData;
 
   return (
     <div className="bg-background">
       {/* Hero — Immersive centered layout with dot grid + bento grid */}
       <section className="relative overflow-hidden border-b border-border">
-        {/* Dot grid background (inspired by Vercel Hero / DataGridHero) */}
+        {/* Dot grid background */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:24px_24px]" />
 
         {/* Radial glow behind headline */}
@@ -122,30 +73,28 @@ export default function Home() {
                   </span>
                   <span className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/60 px-3 py-1.5 text-[0.65rem] font-mono uppercase tracking-[0.22em] text-muted-foreground">
                     <MapPin className="h-3.5 w-3.5 text-primary" />
-                    University of Toronto
+                    {hero.locationChip}
                   </span>
                 </div>
 
                 <div className="max-w-5xl space-y-3 tracking-[-0.055em] text-foreground">
                   <h1 className="text-balance text-5xl font-semibold leading-[0.86] sm:text-6xl md:text-7xl lg:text-[6.8rem]">
-                    Utilizing human values,
+                    {hero.headlineLine1}
                   </h1>
                   <h2 className="text-balance text-4xl font-semibold leading-[0.9] text-foreground/88 sm:text-5xl md:text-6xl lg:text-[5.2rem]">
-                    situated knowledge,
+                    {hero.headlineLine2}
                   </h2>
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                     <span className="h-px w-24 bg-primary/35" />
                     <h3 className="text-balance text-3xl font-semibold leading-tight text-primary sm:text-4xl md:text-5xl lg:text-6xl">
-                      and lived experiences.
+                      {hero.headlineLine3}
                     </h3>
                   </div>
                 </div>
 
                 <div className="grid gap-5 border-t border-border/80 pt-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
                   <p className="max-w-2xl text-pretty text-sm leading-7 text-muted-foreground md:text-base">
-                    Building socio-technical systems for responsible, participatory,
-                    and context-aware AI with communities too often left outside the
-                    room where technology is designed.
+                    {hero.subParagraph}
                   </p>
                   <Button
                     asChild
@@ -164,13 +113,12 @@ export default function Home() {
               <div className="rounded-[1.75rem] border border-border bg-primary p-5 text-primary-foreground shadow-2xl shadow-primary/20">
                 <div className="mb-10 flex items-center justify-between text-primary-foreground/70">
                   <span className="font-mono text-[0.65rem] uppercase tracking-[0.24em]">
-                    Research posture
+                    {hero.researchPostureLabel}
                   </span>
                   <Network className="h-4 w-4" />
                 </div>
                 <p className="text-pretty text-2xl font-medium leading-tight tracking-[-0.04em]">
-                  Technology is never neutral; we study who it serves, who it misses,
-                  and how it can be remade.
+                  {hero.researchPostureBody}
                 </p>
               </div>
 
@@ -178,19 +126,19 @@ export default function Home() {
                 <div className="group rounded-[1.5rem] border border-border bg-card p-4 shadow-sm transition-transform hover:-translate-y-1">
                   <BookOpenCheck className="mb-8 h-5 w-5 text-primary" />
                   <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-muted-foreground">
-                    Methods
+                    {hero.methodsLabel}
                   </p>
                   <p className="mt-2 text-sm font-semibold leading-snug text-foreground">
-                    Empirical + design-oriented inquiry
+                    {hero.methodsValue}
                   </p>
                 </div>
                 <div className="group rounded-[1.5rem] border border-accent/45 bg-accent/40 p-4 shadow-sm transition-transform hover:-translate-y-1">
                   <MoveUpRight className="mb-8 h-5 w-5 text-accent-foreground" />
                   <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-accent-foreground/70">
-                    Focus
+                    {hero.focusLabel}
                   </p>
                   <p className="mt-2 text-sm font-semibold leading-snug text-accent-foreground">
-                    Margins, agency, and global development
+                    {hero.focusValue}
                   </p>
                 </div>
               </div>
@@ -201,7 +149,7 @@ export default function Home() {
         {/* Marquee keyword band */}
         <div className="relative overflow-hidden border-y border-border bg-muted/40 py-4">
           <div className="flex w-max animate-marquee">
-            {[...researchKeywords, ...researchKeywords].map((keyword, i) => (
+            {[...marquee.keywords, ...marquee.keywords].map((keyword, i) => (
               <div key={i} className="flex items-center gap-3 px-6">
                 <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground whitespace-nowrap">
                   {keyword}
@@ -224,33 +172,33 @@ export default function Home() {
                   <div className="mb-7 flex flex-wrap items-center justify-between gap-4 border-b border-border/80 pb-5">
                     <div>
                       <span className="font-mono text-[0.65rem] uppercase tracking-[0.28em] text-primary">
-                        Third Space Research Group
+                        {groupOverview.eyebrow}
                       </span>
                       <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-foreground md:text-3xl">
-                        Computing research from the social edge inward.
+                        {groupOverview.headline}
                       </h2>
                     </div>
                     <span className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-[0.2em] text-muted-foreground">
                       <span className="h-2 w-2 rounded-full bg-primary ring-4 ring-primary/10" />
-                      Toronto / HCI / AI
+                      {groupOverview.locationChip}
                     </span>
                   </div>
 
                   <p className="text-pretty text-base leading-8 text-foreground/90 md:text-lg md:leading-9">
-                    The Third Space research group, led by{" "}
+                    {groupOverview.body.split(professor.name)[0]}
                     <a
-                      href="https://www.ishtiaque.net/"
+                      href={professor.website}
                       target="_blank"
                       rel="noreferrer"
                       className="group/ishtiaque relative inline-flex items-baseline font-semibold text-primary underline decoration-accent/70 decoration-2 underline-offset-4 transition-colors after:absolute after:left-0 after:top-full after:h-8 after:w-72 after:content-[''] hover:text-primary/80"
-                      aria-label="Visit Prof. Ishtiaque Ahmed's website"
+                      aria-label={`Visit ${professor.name}'s website`}
                     >
-                      Prof. Ishtiaque Ahmed
+                      {professor.name}
                       <span className="invisible pointer-events-auto absolute left-0 top-full z-50 mt-4 w-72 translate-y-3 rounded-[1.5rem] border border-primary/15 bg-card p-3 opacity-0 shadow-2xl shadow-primary/20 transition-all delay-300 duration-300 before:absolute before:-top-4 before:left-0 before:h-4 before:w-full before:content-[''] group-hover/ishtiaque:visible group-hover/ishtiaque:translate-y-1 group-hover/ishtiaque:opacity-100 group-hover/ishtiaque:delay-75">
                         <span className="block overflow-hidden rounded-[1.1rem] bg-muted">
                           <Image
-                            src="/ishtique-ahmed.png"
-                            alt="Prof. Ishtiaque Ahmed"
+                            src={professor.imagePath}
+                            alt={professor.name}
                             width={288}
                             height={208}
                             className="h-52 w-full object-cover transition-transform duration-500 group-hover/ishtiaque:scale-105"
@@ -259,51 +207,25 @@ export default function Home() {
                         <span className="mt-3 flex items-center justify-between gap-3 px-1 text-left">
                           <span>
                             <span className="block text-sm font-semibold text-foreground">
-                              Prof. Ishtiaque Ahmed
+                              {professor.name}
                             </span>
                             <span className="mt-1 block text-xs leading-5 text-muted-foreground">
-                              Associate Professor<br />
-                              Department of Computer Science<br />
-                              University of Toronto<br />
-                              National AI Consultant, UNDP Bangladesh
+                              {professor.title}<br />
+                              {professor.department}<br />
+                              {professor.institution}<br />
+                              {professor.role}
                             </span>
                           </span>
                           <MoveUpRight className="h-4 w-4 text-primary" />
                         </span>
                       </span>
-                    </a>{" "}
-                    at the University of Toronto, studies the social, ethical, and
-                    political dimensions of computing and artificial intelligence. The
-                    group works at the intersection of human-computer interaction
-                    (HCI), AI, and critical computing to understand how technologies
-                    shape—and are shaped by—everyday life practices, particularly in
-                    contexts of marginalization and global development, centering
-                    communities that are often overlooked in mainstream computing
-                    research.
+                    </a>
+                    {groupOverview.body.split(professor.name)[1]}
                   </p>
 
                   <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                    {[
-                      {
-                        title: "Human-Computer Interaction",
-                        label: "HCI",
-                        description: "Designing with people, practices, and lived contexts.",
-                        icon: HeartHandshake,
-                      },
-                      {
-                        title: "AI + Critical Computing",
-                        label: "AI",
-                        description: "Questioning power, ethics, and automated systems.",
-                        icon: Brain,
-                      },
-                      {
-                        title: "Communities at the margins",
-                        label: "CARE",
-                        description: "Centering voices mainstream computing often overlooks.",
-                        icon: Globe,
-                      },
-                    ].map((item, index) => {
-                      const Icon = item.icon;
+                    {groupOverview.focusCards.map((item, index) => {
+                      const Icon = iconMap[item.icon as keyof typeof iconMap] || Globe;
 
                       return (
                         <div
@@ -339,39 +261,39 @@ export default function Home() {
                 </div>
 
                 <a
-                  href="https://www.ishtiaque.net/"
+                  href={professor.website}
                   target="_blank"
                   rel="noreferrer"
                   className="group/profile relative min-h-[360px] overflow-hidden rounded-b-[2rem] border-t border-border bg-primary text-primary-foreground lg:rounded-bl-none lg:rounded-r-[2rem] lg:border-l lg:border-t-0"
-                  aria-label="Visit Prof. Ishtiaque Ahmed's website"
+                  aria-label={`Visit ${professor.name}'s website`}
                 >
                   <Image
-                    src="/ishtique-ahmed.png"
-                    alt="Prof. Ishtiaque Ahmed"
+                    src={professor.imagePath}
+                    alt={professor.name}
                     fill
                     sizes="(min-width: 1024px) 340px, 100vw"
                     className="object-cover opacity-80 transition duration-700 group-hover/profile:scale-105 group-hover/profile:opacity-95"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/45 to-transparent" />
                   <div className="absolute left-5 top-5 rounded-full border border-white/20 bg-white/15 px-3 py-1.5 font-mono text-[0.62rem] uppercase tracking-[0.22em] backdrop-blur">
-                    Glance
+                    {groupOverview.glanceLabel}
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-5">
                     <div className="rounded-[1.4rem] border border-white/15 bg-white/12 p-4 backdrop-blur-md transition-transform duration-300 group-hover/profile:-translate-y-1">
                       <div className="flex items-end justify-between gap-4">
                         <div>
                           <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-primary-foreground/70">
-                            Associate Professor
+                            {professor.title}
                           </p>
                           <p className="mt-1 text-xl font-semibold tracking-[-0.03em]">
-                            Prof. Ishtiaque Ahmed
+                            {professor.name}
                           </p>
                         </div>
                         <MoveUpRight className="h-5 w-5" />
                       </div>
                       <p className="mt-3 text-sm leading-6 text-primary-foreground/78">
-                        Department of Computer Science, University of Toronto.<br />
-                        National AI Consultant, UNDP Bangladesh.
+                        {professor.department}, {professor.institution}.<br />
+                        {professor.role}.
                       </p>
                     </div>
                   </div>
@@ -387,23 +309,23 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <Cpu className="h-4 w-4 text-primary" />
               <h2 className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
-                Research Domains
+                {researchDomains.sectionLabel}
               </h2>
             </div>
             <span className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Active
+              {researchDomains.statusLabel}
             </span>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:auto-rows-[180px]">
-            {bentoItems.map((item, index) => {
-              const Icon = item.icon;
+            {researchDomains.items.map((item, index) => {
+              const Icon = iconMap[item.icon as keyof typeof iconMap] || Globe;
               const isPrimary = item.accent === "primary";
               return (
                 <div
                   key={index}
-                  className={`group relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-sm transition-all hover:shadow-md hover:border-primary/30 ${item.className}`}
+                  className={`group relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-sm transition-all hover:shadow-md hover:border-primary/30 ${item.colSpan}`}
                 >
                   {/* Hover gradient glow */}
                   <div className={`pointer-events-none absolute -top-8 -right-8 h-24 w-24 rounded-full blur-2xl opacity-0 transition-opacity group-hover:opacity-100 ${isPrimary ? "bg-primary/15" : "bg-accent/15"}`} />

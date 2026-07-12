@@ -321,7 +321,7 @@ function SignedInView({
   const [showConfig, setShowConfig] = useState(false);
 
   // Form tab selection
-  const [activeTab, setActiveTab] = useState<"hero" | "pillars" | "navbar" | "footerLabs" | "location">("hero");
+  const [activeTab, setActiveTab] = useState<"hero" | "pillars" | "navbar" | "footerLabs" | "location" | "marquee" | "groupOverview" | "professor" | "researchDomains" | "about">("hero");
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
@@ -480,6 +480,11 @@ function SignedInView({
     { id: "navbar" as const, label: "03. Nav Settings", icon: Compass },
     { id: "footerLabs" as const, label: "04. Lab & Campuses", icon: Database },
     { id: "location" as const, label: "05. Campus Location", icon: MapPin },
+    { id: "marquee" as const, label: "06. Marquee Band", icon: Sparkles },
+    { id: "groupOverview" as const, label: "07. Group Overview", icon: Layout },
+    { id: "professor" as const, label: "08. Professor", icon: ShieldCheck },
+    { id: "researchDomains" as const, label: "09. Research Domains", icon: Database },
+    { id: "about" as const, label: "10. About Section", icon: FileCode },
   ];
 
   if (loading) {
@@ -745,7 +750,7 @@ function SignedInView({
                   <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
                     S01
                   </div>
-                  
+
                   <div className="mb-6">
                     <h2 className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Draft Sheet</h2>
                     <h3 className="text-base font-bold text-foreground font-serif">Hero Section Properties</h3>
@@ -753,37 +758,51 @@ function SignedInView({
                   </div>
 
                   <div className="space-y-4">
-                    <div className="space-y-1">
-                      <Label htmlFor="hero-badge" className="text-[10px] font-mono uppercase text-muted-foreground">Eyebrow Banner</Label>
-                      <Input
-                        id="hero-badge"
-                        value={content.hero.badge}
-                        onChange={(e) => handleFieldChange("hero", "badge", e.target.value)}
-                        className="font-mono text-xs"
-                      />
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <Label htmlFor="hero-badge" className="text-[10px] font-mono uppercase text-muted-foreground">Eyebrow Banner</Label>
+                        <Input
+                          id="hero-badge"
+                          value={content.hero.badge}
+                          onChange={(e) => handleFieldChange("hero", "badge", e.target.value)}
+                          className="font-mono text-xs"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="hero-location" className="text-[10px] font-mono uppercase text-muted-foreground">Location Chip</Label>
+                        <Input
+                          id="hero-location"
+                          value={content.hero.locationChip ?? ""}
+                          onChange={(e) => handleFieldChange("hero", "locationChip", e.target.value)}
+                          className="font-mono text-xs"
+                        />
+                      </div>
                     </div>
                     <div className="space-y-1">
-                      <Label htmlFor="hero-title" className="text-[10px] font-mono uppercase text-muted-foreground">Header Headline</Label>
-                      <Input
-                        id="hero-title"
-                        value={content.hero.title}
-                        onChange={(e) => handleFieldChange("hero", "title", e.target.value)}
-                        className="font-serif text-sm font-bold"
-                      />
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Headline Line 1</Label>
+                      <Input value={content.hero.headlineLine1 ?? ""} onChange={(e) => handleFieldChange("hero", "headlineLine1", e.target.value)} className="font-serif font-bold" />
                     </div>
                     <div className="space-y-1">
-                      <Label htmlFor="hero-desc" className="text-[10px] font-mono uppercase text-muted-foreground">Description Body</Label>
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Headline Line 2</Label>
+                      <Input value={content.hero.headlineLine2 ?? ""} onChange={(e) => handleFieldChange("hero", "headlineLine2", e.target.value)} className="font-serif" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Headline Line 3 (accent)</Label>
+                      <Input value={content.hero.headlineLine3 ?? ""} onChange={(e) => handleFieldChange("hero", "headlineLine3", e.target.value)} className="font-serif" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="hero-sub" className="text-[10px] font-mono uppercase text-muted-foreground">Sub Paragraph</Label>
                       <textarea
-                        id="hero-desc"
-                        rows={4}
-                        value={content.hero.description}
-                        onChange={(e) => handleFieldChange("hero", "description", e.target.value)}
+                        id="hero-sub"
+                        rows={3}
+                        value={content.hero.subParagraph ?? ""}
+                        onChange={(e) => handleFieldChange("hero", "subParagraph", e.target.value)}
                         className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed"
                       />
                     </div>
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div className="space-y-1">
-                        <Label htmlFor="hero-p-action" className="text-[10px] font-mono uppercase text-muted-foreground">Primary CTA Link</Label>
+                        <Label htmlFor="hero-p-action" className="text-[10px] font-mono uppercase text-muted-foreground">Primary CTA Label</Label>
                         <Input
                           id="hero-p-action"
                           value={content.hero.primaryActionText}
@@ -792,13 +811,44 @@ function SignedInView({
                         />
                       </div>
                       <div className="space-y-1">
-                        <Label htmlFor="hero-s-action" className="text-[10px] font-mono uppercase text-muted-foreground">Secondary CTA Link</Label>
+                        <Label htmlFor="hero-s-action" className="text-[10px] font-mono uppercase text-muted-foreground">Secondary CTA Label</Label>
                         <Input
                           id="hero-s-action"
                           value={content.hero.secondaryActionText}
                           onChange={(e) => handleFieldChange("hero", "secondaryActionText", e.target.value)}
                           className="font-mono text-xs"
                         />
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Research Posture Label</Label>
+                      <Input value={content.hero.researchPostureLabel ?? ""} onChange={(e) => handleFieldChange("hero", "researchPostureLabel", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Research Posture Body</Label>
+                      <textarea
+                        rows={2}
+                        value={content.hero.researchPostureBody ?? ""}
+                        onChange={(e) => handleFieldChange("hero", "researchPostureBody", e.target.value)}
+                        className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-mono uppercase text-muted-foreground">Methods Label</Label>
+                        <Input value={content.hero.methodsLabel ?? ""} onChange={(e) => handleFieldChange("hero", "methodsLabel", e.target.value)} className="font-mono text-xs" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-mono uppercase text-muted-foreground">Methods Value</Label>
+                        <Input value={content.hero.methodsValue ?? ""} onChange={(e) => handleFieldChange("hero", "methodsValue", e.target.value)} className="text-xs" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-mono uppercase text-muted-foreground">Focus Label</Label>
+                        <Input value={content.hero.focusLabel ?? ""} onChange={(e) => handleFieldChange("hero", "focusLabel", e.target.value)} className="font-mono text-xs" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-mono uppercase text-muted-foreground">Focus Value</Label>
+                        <Input value={content.hero.focusValue ?? ""} onChange={(e) => handleFieldChange("hero", "focusValue", e.target.value)} className="text-xs" />
                       </div>
                     </div>
                   </div>
@@ -941,6 +991,15 @@ function SignedInView({
                         </div>
                       </div>
                       <div className="space-y-1">
+                        <Label htmlFor="footer-brand-copyright" className="text-[10px] font-mono uppercase text-muted-foreground">Copyright Suffix</Label>
+                        <Input
+                          id="footer-brand-copyright"
+                          value={content.brand.copyrightSuffix ?? ""}
+                          onChange={(e) => handleFieldChange("brand", "copyrightSuffix", e.target.value)}
+                          className="font-mono text-xs"
+                        />
+                      </div>
+                      <div className="space-y-1">
                         <Label htmlFor="footer-brand-desc" className="text-[10px] font-mono uppercase text-muted-foreground">Footer Editorial Paragraph</Label>
                         <textarea
                           id="footer-brand-desc"
@@ -971,6 +1030,15 @@ function SignedInView({
                           id="social-x"
                           value={content.socials.xUrl}
                           onChange={(e) => handleFieldChange("socials", "xUrl", e.target.value)}
+                          className="font-mono text-xs"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="social-x-handle" className="text-[10px] font-mono uppercase text-muted-foreground">X Handle (@...)</Label>
+                        <Input
+                          id="social-x-handle"
+                          value={content.socials.xHandle ?? ""}
+                          onChange={(e) => handleFieldChange("socials", "xHandle", e.target.value)}
                           className="font-mono text-xs"
                         />
                       </div>
@@ -1069,7 +1137,7 @@ function SignedInView({
                   <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
                     L01
                   </div>
-                  
+
                   <div className="mb-6">
                     <h2 className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Physical Coordinates</h2>
                     <h3 className="text-base font-bold text-foreground font-serif">Spatial details</h3>
@@ -1079,6 +1147,14 @@ function SignedInView({
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
+                        <Label htmlFor="loc-heading" className="text-[10px] font-mono uppercase text-muted-foreground">Section Heading</Label>
+                        <Input
+                          id="loc-heading"
+                          value={content.location.locationHeading ?? ""}
+                          onChange={(e) => handleFieldChange("location", "locationHeading", e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-1">
                         <Label htmlFor="loc-title" className="text-[10px] font-mono uppercase text-muted-foreground">Campus Name</Label>
                         <Input
                           id="loc-title"
@@ -1086,12 +1162,23 @@ function SignedInView({
                           onChange={(e) => handleFieldChange("location", "title", e.target.value)}
                         />
                       </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
                         <Label htmlFor="loc-coords" className="text-[10px] font-mono uppercase text-muted-foreground">Grid Coordinates</Label>
                         <Input
                           id="loc-coords"
                           value={content.location.coordinates}
                           onChange={(e) => handleFieldChange("location", "coordinates", e.target.value)}
+                          className="font-mono text-xs"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="loc-map-label" className="text-[10px] font-mono uppercase text-muted-foreground">Map Link Label</Label>
+                        <Input
+                          id="loc-map-label"
+                          value={content.location.footerMapLabel ?? ""}
+                          onChange={(e) => handleFieldChange("location", "footerMapLabel", e.target.value)}
                           className="font-mono text-xs"
                         />
                       </div>
@@ -1131,6 +1218,213 @@ function SignedInView({
                         className="font-mono text-xs text-muted-foreground"
                       />
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "marquee" && content?.marquee && (
+                <div className="relative bg-card border border-border rounded p-6 shadow-sm">
+                  <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">
+                    M01
+                  </div>
+                  <div className="mb-6">
+                    <h2 className="text-xs font-mono uppercase tracking-widest text-muted-foreground">Marquee Band</h2>
+                    <h3 className="text-base font-bold text-foreground font-serif">Scrolling keywords</h3>
+                    <p className="text-[11px] text-muted-foreground">One keyword per line. These cycle across the marquee strip.</p>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Keywords (one per line)</Label>
+                    <textarea
+                      rows={12}
+                      value={content.marquee.keywords.join("\n")}
+                      onChange={(e) =>
+                        setContent((prev: any) => ({
+                          ...prev,
+                          marquee: { keywords: e.target.value.split("\n").map((k: string) => k.trim()).filter(Boolean) },
+                        }))
+                      }
+                      className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-mono leading-relaxed"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "groupOverview" && content?.groupOverview && (
+                <div className="space-y-4">
+                  <div className="mb-2">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Draft Sheet</span>
+                    <h3 className="text-base font-bold text-foreground font-serif">Group Overview Section</h3>
+                  </div>
+
+                  <div className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                    <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">G01</div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-mono uppercase text-muted-foreground">Eyebrow Label</Label>
+                        <Input value={content.groupOverview.eyebrow} onChange={(e) => handleFieldChange("groupOverview", "eyebrow", e.target.value)} className="font-mono text-xs" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-mono uppercase text-muted-foreground">Location Chip</Label>
+                        <Input value={content.groupOverview.locationChip} onChange={(e) => handleFieldChange("groupOverview", "locationChip", e.target.value)} className="font-mono text-xs" />
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Headline</Label>
+                      <Input value={content.groupOverview.headline} onChange={(e) => handleFieldChange("groupOverview", "headline", e.target.value)} className="font-serif font-bold" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Body Paragraph</Label>
+                      <textarea
+                        rows={5}
+                        value={content.groupOverview.body}
+                        onChange={(e) => handleFieldChange("groupOverview", "body", e.target.value)}
+                        className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Profile Panel Label ("Glance")</Label>
+                      <Input value={content.groupOverview.glanceLabel} onChange={(e) => handleFieldChange("groupOverview", "glanceLabel", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <span className="text-[10px] font-mono uppercase text-muted-foreground tracking-wider">Focus Cards</span>
+                    {content.groupOverview.focusCards.map((card: any, index: number) => (
+                      <div key={index} className="relative bg-card border border-border rounded p-5 shadow-sm">
+                        <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">F0{index + 1}</div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="space-y-1">
+                            <Label className="text-[10px] font-mono uppercase text-muted-foreground">Title</Label>
+                            <Input value={card.title} onChange={(e) => {
+                              const updated = [...content.groupOverview.focusCards];
+                              updated[index] = { ...updated[index], title: e.target.value };
+                              setContent((prev: any) => ({ ...prev, groupOverview: { ...prev.groupOverview, focusCards: updated } }));
+                            }} className="font-mono text-xs" />
+                          </div>
+                          <div className="space-y-1">
+                            <Label className="text-[10px] font-mono uppercase text-muted-foreground">Label Tag</Label>
+                            <Input value={card.label} onChange={(e) => {
+                              const updated = [...content.groupOverview.focusCards];
+                              updated[index] = { ...updated[index], label: e.target.value };
+                              setContent((prev: any) => ({ ...prev, groupOverview: { ...prev.groupOverview, focusCards: updated } }));
+                            }} className="font-mono text-xs" />
+                          </div>
+                          <div className="space-y-1 sm:col-span-2">
+                            <Label className="text-[10px] font-mono uppercase text-muted-foreground">Description</Label>
+                            <Input value={card.description} onChange={(e) => {
+                              const updated = [...content.groupOverview.focusCards];
+                              updated[index] = { ...updated[index], description: e.target.value };
+                              setContent((prev: any) => ({ ...prev, groupOverview: { ...prev.groupOverview, focusCards: updated } }));
+                            }} className="text-xs" />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "professor" && content?.professor && (
+                <div className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                  <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">P01</div>
+                  <div className="mb-2">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Draft Sheet</span>
+                    <h3 className="text-base font-bold text-foreground font-serif">Professor Profile</h3>
+                  </div>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Full Name</Label>
+                      <Input value={content.professor.name} onChange={(e) => handleFieldChange("professor", "name", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Title</Label>
+                      <Input value={content.professor.title} onChange={(e) => handleFieldChange("professor", "title", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Department</Label>
+                      <Input value={content.professor.department} onChange={(e) => handleFieldChange("professor", "department", e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Institution</Label>
+                      <Input value={content.professor.institution} onChange={(e) => handleFieldChange("professor", "institution", e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Additional Role</Label>
+                      <Input value={content.professor.role} onChange={(e) => handleFieldChange("professor", "role", e.target.value)} />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Website URL</Label>
+                      <Input value={content.professor.website} onChange={(e) => handleFieldChange("professor", "website", e.target.value)} className="font-mono text-xs text-muted-foreground" />
+                    </div>
+                    <div className="space-y-1 sm:col-span-2">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Profile Image Path (from /public)</Label>
+                      <Input value={content.professor.imagePath} onChange={(e) => handleFieldChange("professor", "imagePath", e.target.value)} className="font-mono text-xs text-muted-foreground" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "researchDomains" && content?.researchDomains && (
+                <div className="space-y-4">
+                  <div className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                    <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">R01</div>
+                    <div className="mb-2">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Draft Sheet</span>
+                      <h3 className="text-base font-bold text-foreground font-serif">Research Domains Bento Grid</h3>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-mono uppercase text-muted-foreground">Section Label</Label>
+                        <Input value={content.researchDomains.sectionLabel} onChange={(e) => handleFieldChange("researchDomains", "sectionLabel", e.target.value)} className="font-mono text-xs" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-[10px] font-mono uppercase text-muted-foreground">Status Badge</Label>
+                        <Input value={content.researchDomains.statusLabel} onChange={(e) => handleFieldChange("researchDomains", "statusLabel", e.target.value)} className="font-mono text-xs" />
+                      </div>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-mono uppercase text-muted-foreground tracking-wider">Domain Cards</span>
+                  {content.researchDomains.items.map((item: any, index: number) => (
+                    <div key={index} className="relative bg-card border border-border rounded p-5 shadow-sm">
+                      <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">D0{index + 1}</div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-1">
+                          <Label className="text-[10px] font-mono uppercase text-muted-foreground">Title</Label>
+                          <Input value={item.title} onChange={(e) => handleListItemChange("researchDomains", index, "title", e.target.value)} className="font-mono text-xs" />
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-[10px] font-mono uppercase text-muted-foreground">Icon Name</Label>
+                          <Input value={item.icon} onChange={(e) => handleListItemChange("researchDomains", index, "icon", e.target.value)} className="font-mono text-xs text-muted-foreground" />
+                        </div>
+                        <div className="space-y-1 sm:col-span-2">
+                          <Label className="text-[10px] font-mono uppercase text-muted-foreground">Description</Label>
+                          <Input value={item.description} onChange={(e) => handleListItemChange("researchDomains", index, "description", e.target.value)} className="text-xs" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {activeTab === "about" && content?.about && (
+                <div className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                  <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">A01</div>
+                  <div className="mb-2">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">Draft Sheet</span>
+                    <h3 className="text-base font-bold text-foreground font-serif">About the Group Section</h3>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Section Title</Label>
+                    <Input value={content.about.title} onChange={(e) => handleFieldChange("about", "title", e.target.value)} className="font-mono text-xs" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Body Paragraph</Label>
+                    <textarea
+                      rows={5}
+                      value={content.about.body}
+                      onChange={(e) => handleFieldChange("about", "body", e.target.value)}
+                      className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed"
+                    />
                   </div>
                 </div>
               )}

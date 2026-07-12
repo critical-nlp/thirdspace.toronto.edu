@@ -20,7 +20,7 @@ export function Footer() {
             <Link
               href="/"
               className="flex items-center"
-              aria-label={`${brand.name} — University of Toronto home`}
+              aria-label={`${brand.name} ${brand.tagline} home`}
             >
               <BrandMark />
             </Link>
@@ -114,7 +114,7 @@ export function Footer() {
            {/* Column 4: Location Info (3 cols) */}
            <div className="space-y-4 md:col-span-3">
              <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-primary/80">
-               Location
+               {location.locationHeading}
              </h3>
              
              {/* Interactive Location Tag with Hover Google Map */}
@@ -179,7 +179,7 @@ export function Footer() {
                  </div>
                  <div className="p-3 bg-card border-t border-border/60 flex items-center justify-between text-xs text-muted-foreground">
                    <span>{location.street}, Toronto</span>
-                   <span className="text-[10px] font-semibold text-primary uppercase">Google Maps</span>
+                   <span className="text-[10px] font-semibold text-primary uppercase">{location.footerMapLabel}</span>
                  </div>
                </HoverCardContent>
              </HoverCard>
@@ -188,15 +188,15 @@ export function Footer() {
 
         {/* Footer Bottom */}
         <div className="mt-12 border-t border-border/60 pt-6 flex flex-col items-center justify-between gap-4 sm:flex-row text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} {brand.name} — University of Toronto.</p>
+          <p>© {new Date().getFullYear()} {brand.name} {brand.copyrightSuffix}</p>
           <div className="flex items-center gap-6">
             <a
-              href="https://x.com/SpaceUoft"
+              href={socials.xUrl}
               target="_blank"
               rel="noreferrer"
               className="hover:underline hover:text-primary flex items-center gap-1"
             >
-              @SpaceUoft <ExternalLink className="h-3 w-3" />
+              {socials.xHandle} <ExternalLink className="h-3 w-3" />
             </a>
             <span className="text-[10px] uppercase tracking-[0.18em] text-primary/70 font-semibold">
               {brand.tagline}

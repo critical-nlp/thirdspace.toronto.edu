@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -365,6 +366,15 @@ export default function Home() {
               <p className="text-pretty text-base leading-relaxed text-foreground sm:text-lg md:text-xl">
                 {about.body}
               </p>
+              {(about as any).ctaLabel && (
+                <Link
+                  href={(about as any).ctaHref ?? "/about"}
+                  className="group inline-flex items-center gap-2 self-start font-mono text-xs uppercase tracking-[0.18em] text-primary transition-colors hover:text-primary/80"
+                >
+                  {(about as any).ctaLabel}
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                </Link>
+              )}
             </div>
           </div>
         </section>

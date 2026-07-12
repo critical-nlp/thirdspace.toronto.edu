@@ -20,6 +20,10 @@ import {
   Menu,
   Settings,
   Database,
+  Users,
+  BookOpenCheck,
+  Plus,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -321,7 +325,7 @@ function SignedInView({
   const [showConfig, setShowConfig] = useState(false);
 
   // Form tab selection
-  const [activeTab, setActiveTab] = useState<"hero" | "pillars" | "navbar" | "footerLabs" | "location" | "marquee" | "groupOverview" | "professor" | "researchDomains" | "about">("hero");
+  const [activeTab, setActiveTab] = useState<"hero" | "pillars" | "navbar" | "footerLabs" | "location" | "marquee" | "groupOverview" | "professor" | "researchDomains" | "about" | "team" | "publications" | "aboutPage" | "contact">("hero");
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
@@ -397,6 +401,183 @@ function SignedInView({
           links,
         },
       };
+    });
+  };
+
+  const handleTeamMemberChange = (sectionIndex: number, memberIndex: number, field: string, value: string) => {
+    setContent((prev: any) => {
+      const sections = [...prev.team.sections];
+      const members = [...(sections[sectionIndex].members ?? [])];
+      members[memberIndex] = { ...members[memberIndex], [field]: value };
+      sections[sectionIndex] = { ...sections[sectionIndex], members };
+      return { ...prev, team: { ...prev.team, sections } };
+    });
+  };
+
+  const handleTeamMemberLinkChange = (sectionIndex: number, memberIndex: number, linkIndex: number, field: "label" | "url", value: string) => {
+    setContent((prev: any) => {
+      const sections = [...prev.team.sections];
+      const members = [...(sections[sectionIndex].members ?? [])];
+      const links = [...(members[memberIndex].links ?? [])];
+      links[linkIndex] = { ...links[linkIndex], [field]: value };
+      members[memberIndex] = { ...members[memberIndex], links };
+      sections[sectionIndex] = { ...sections[sectionIndex], members };
+      return { ...prev, team: { ...prev.team, sections } };
+    });
+  };
+
+  const handleTeamMemberLinkAdd = (sectionIndex: number, memberIndex: number) => {
+    setContent((prev: any) => {
+      const sections = [...prev.team.sections];
+      const members = [...(sections[sectionIndex].members ?? [])];
+      const links = [...(members[memberIndex].links ?? []), { label: "", url: "" }];
+      members[memberIndex] = { ...members[memberIndex], links };
+      sections[sectionIndex] = { ...sections[sectionIndex], members };
+      return { ...prev, team: { ...prev.team, sections } };
+    });
+  };
+
+  const handleTeamMemberAdd = (sectionIndex: number) => {
+    setContent((prev: any) => {
+      const sections = [...prev.team.sections];
+      const members = [...(sections[sectionIndex].members ?? []), { name: "", title: "", focus: "", imagePath: "", links: [] }];
+      sections[sectionIndex] = { ...sections[sectionIndex], members };
+      return { ...prev, team: { ...prev.team, sections } };
+    });
+  };
+
+  const handleTeamMemberRemove = (sectionIndex: number, memberIndex: number) => {
+    setContent((prev: any) => {
+      const sections = [...prev.team.sections];
+      const members = [...(sections[sectionIndex].members ?? [])];
+      members.splice(memberIndex, 1);
+      sections[sectionIndex] = { ...sections[sectionIndex], members };
+      return { ...prev, team: { ...prev.team, sections } };
+    });
+  };
+
+  const handleAlumniChange = (index: number, field: string, value: string) => {
+    setContent((prev: any) => {
+      const members = [...(prev.team.alumni.members ?? [])];
+      members[index] = { ...members[index], [field]: value };
+      return { ...prev, team: { ...prev.team, alumni: { ...prev.team.alumni, members } } };
+    });
+  };
+
+  const handleAlumniAdd = () => {
+    setContent((prev: any) => {
+      const members = [...(prev.team.alumni.members ?? []), { name: "", role: "", currentPosition: "", currentAffiliation: "" }];
+      return { ...prev, team: { ...prev.team, alumni: { ...prev.team.alumni, members } } };
+    });
+  };
+
+  const handleAlumniRemove = (index: number) => {
+    setContent((prev: any) => {
+      const members = [...(prev.team.alumni.members ?? [])];
+      members.splice(index, 1);
+      return { ...prev, team: { ...prev.team, alumni: { ...prev.team.alumni, members } } };
+    });
+  };
+
+  const handleBookChange = (index: number, field: string, value: string) => {
+    setContent((prev: any) => {
+      const books = [...(prev.publications.books ?? [])];
+      books[index] = { ...books[index], [field]: value };
+      return { ...prev, publications: { ...prev.publications, books } };
+    });
+  };
+
+  const handleBookAdd = () => {
+    setContent((prev: any) => {
+      const books = [...(prev.publications.books ?? []), { title: "", authors: "", year: "", url: "", description: "", coverImagePath: "" }];
+      return { ...prev, publications: { ...prev.publications, books } };
+    });
+  };
+
+  const handleBookRemove = (index: number) => {
+    setContent((prev: any) => {
+      const books = [...(prev.publications.books ?? [])];
+      books.splice(index, 1);
+      return { ...prev, publications: { ...prev.publications, books } };
+    });
+  };
+
+  const handlePubChange = (year: string, kind: string, index: number, field: string, value: string) => {
+    setContent((prev: any) => {
+      const years = { ...prev.publications.years };
+      const bucket = { ...(years[year] ?? {}) };
+      const entries = [...(bucket[kind] ?? [])];
+      entries[index] = { ...entries[index], [field]: value };
+      bucket[kind] = entries;
+      years[year] = bucket;
+      return { ...prev, publications: { ...prev.publications, years } };
+    });
+  };
+
+  const handlePubAdd = (year: string, kind: string) => {
+    setContent((prev: any) => {
+      const years = { ...prev.publications.years };
+      const bucket = { ...(years[year] ?? {}) };
+      const entries = [...(bucket[kind] ?? []), { authors: "", title: "", venue: "", url: "", doi: "", pages: "", articleNumber: "" }];
+      bucket[kind] = entries;
+      years[year] = bucket;
+      return { ...prev, publications: { ...prev.publications, years } };
+    });
+  };
+
+  const handlePubRemove = (year: string, kind: string, index: number) => {
+    setContent((prev: any) => {
+      const years = { ...prev.publications.years };
+      const bucket = { ...(years[year] ?? {}) };
+      const entries = [...(bucket[kind] ?? [])];
+      entries.splice(index, 1);
+      bucket[kind] = entries;
+      years[year] = bucket;
+      return { ...prev, publications: { ...prev.publications, years } };
+    });
+  };
+
+  const handleYearAdd = () => {
+    setContent((prev: any) => {
+      const years = { ...prev.publications.years };
+      const currentYear = new Date().getFullYear().toString();
+      let key = currentYear;
+      while (years[key]) {
+        key = String(Number(key) - 1);
+      }
+      years[key] = { label: key, journalArticles: [], conferenceProceedings: [], extendedAbstracts: [], researchArtifacts: [] };
+      return { ...prev, publications: { ...prev.publications, years } };
+    });
+  };
+
+  const handleYearRemove = (year: string) => {
+    setContent((prev: any) => {
+      const years = { ...prev.publications.years };
+      delete years[year];
+      return { ...prev, publications: { ...prev.publications, years } };
+    });
+  };
+
+  const handleApproachItemChange = (index: number, field: string, value: string) => {
+    setContent((prev: any) => {
+      const items = [...(prev.aboutPage.approachItems ?? [])];
+      items[index] = { ...items[index], [field]: value };
+      return { ...prev, aboutPage: { ...prev.aboutPage, approachItems: items } };
+    });
+  };
+
+  const handleApproachItemAdd = () => {
+    setContent((prev: any) => {
+      const items = [...(prev.aboutPage.approachItems ?? []), { title: "", body: "" }];
+      return { ...prev, aboutPage: { ...prev.aboutPage, approachItems: items } };
+    });
+  };
+
+  const handleApproachItemRemove = (index: number) => {
+    setContent((prev: any) => {
+      const items = [...(prev.aboutPage.approachItems ?? [])];
+      items.splice(index, 1);
+      return { ...prev, aboutPage: { ...prev.aboutPage, approachItems: items } };
     });
   };
 
@@ -485,6 +666,10 @@ function SignedInView({
     { id: "professor" as const, label: "08. Professor", icon: ShieldCheck },
     { id: "researchDomains" as const, label: "09. Research Domains", icon: Database },
     { id: "about" as const, label: "10. About Section", icon: FileCode },
+    { id: "team" as const, label: "11. Team", icon: Users },
+    { id: "publications" as const, label: "12. Publications", icon: BookOpenCheck },
+    { id: "aboutPage" as const, label: "13. About Page", icon: FileCode },
+    { id: "contact" as const, label: "14. Contact", icon: Mail },
   ];
 
   if (loading) {
@@ -1357,7 +1542,7 @@ function SignedInView({
                       <Input value={content.professor.website} onChange={(e) => handleFieldChange("professor", "website", e.target.value)} className="font-mono text-xs text-muted-foreground" />
                     </div>
                     <div className="space-y-1 sm:col-span-2">
-                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Profile Image Path (from /public)</Label>
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Profile Image Path (from /public/headshots)</Label>
                       <Input value={content.professor.imagePath} onChange={(e) => handleFieldChange("professor", "imagePath", e.target.value)} className="font-mono text-xs text-muted-foreground" />
                     </div>
                   </div>
@@ -1425,6 +1610,325 @@ function SignedInView({
                       onChange={(e) => handleFieldChange("about", "body", e.target.value)}
                       className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed"
                     />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">CTA Label</Label>
+                      <Input value={content.about.ctaLabel ?? ""} onChange={(e) => handleFieldChange("about", "ctaLabel", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">CTA Href</Label>
+                      <Input value={content.about.ctaHref ?? "/about"} onChange={(e) => handleFieldChange("about", "ctaHref", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "team" && content?.team && (
+                <div className="space-y-6">
+                  <div className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                    <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">T01</div>
+                    <h3 className="text-base font-bold text-foreground font-serif">Team Page Header</h3>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Eyebrow</Label>
+                      <Input value={content.team.pageEyebrow} onChange={(e) => handleFieldChange("team", "pageEyebrow", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Headline</Label>
+                      <Input value={content.team.pageHeadline} onChange={(e) => handleFieldChange("team", "pageHeadline", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Body</Label>
+                      <textarea rows={3} value={content.team.pageBody} onChange={(e) => handleFieldChange("team", "pageBody", e.target.value)} className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed" />
+                    </div>
+                  </div>
+
+                  {content.team.sections?.map((section: any, sectionIndex: number) => (
+                    <div key={`section-${sectionIndex}`} className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                      <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">T0{sectionIndex + 2}</div>
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-base font-bold text-foreground font-serif">{section.role}</h3>
+                        <Button size="xs" variant="outline" onClick={() => handleTeamMemberAdd(sectionIndex)}>
+                          <Plus className="h-3 w-3" /> Add Member
+                        </Button>
+                      </div>
+
+                      <div className="space-y-4">
+                        {(section.members ?? []).map((member: any, memberIndex: number) => (
+                          <div key={`member-${memberIndex}`} className="rounded border border-border bg-muted/30 p-4 space-y-3">
+                            <div className="flex items-center justify-between">
+                              <span className="font-mono text-[10px] uppercase text-muted-foreground">{member.name || `Member ${memberIndex + 1}`}</span>
+                              <Button size="xs" variant="ghost" onClick={() => handleTeamMemberRemove(sectionIndex, memberIndex)}>
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1">
+                                <Label className="text-[10px] font-mono uppercase text-muted-foreground">Name</Label>
+                                <Input value={member.name ?? ""} onChange={(e) => handleTeamMemberChange(sectionIndex, memberIndex, "name", e.target.value)} className="font-mono text-xs" />
+                              </div>
+                              <div className="space-y-1">
+                                <Label className="text-[10px] font-mono uppercase text-muted-foreground">Title</Label>
+                                <Input value={member.title ?? ""} onChange={(e) => handleTeamMemberChange(sectionIndex, memberIndex, "title", e.target.value)} className="font-mono text-xs" />
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-1">
+                                <Label className="text-[10px] font-mono uppercase text-muted-foreground">Focus</Label>
+                                <Input value={member.focus ?? ""} onChange={(e) => handleTeamMemberChange(sectionIndex, memberIndex, "focus", e.target.value)} className="font-mono text-xs" />
+                              </div>
+                              <div className="space-y-1">
+                                <Label className="text-[10px] font-mono uppercase text-muted-foreground">Image Path</Label>
+                                <Input value={member.imagePath ?? ""} onChange={(e) => handleTeamMemberChange(sectionIndex, memberIndex, "imagePath", e.target.value)} className="font-mono text-xs" placeholder="/headshots/name.png" />
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <Label className="text-[10px] font-mono uppercase text-muted-foreground">Links</Label>
+                                <Button size="xs" variant="ghost" onClick={() => handleTeamMemberLinkAdd(sectionIndex, memberIndex)}>
+                                  <Plus className="h-3 w-3" /> Link
+                                </Button>
+                              </div>
+                              {(member.links ?? []).map((link: any, linkIndex: number) => (
+                                <div key={`link-${linkIndex}`} className="grid grid-cols-2 gap-2">
+                                  <Input value={link.label ?? ""} onChange={(e) => handleTeamMemberLinkChange(sectionIndex, memberIndex, linkIndex, "label", e.target.value)} placeholder="Label" className="font-mono text-xs" />
+                                  <Input value={link.url ?? ""} onChange={(e) => handleTeamMemberLinkChange(sectionIndex, memberIndex, linkIndex, "url", e.target.value)} placeholder="https://..." className="font-mono text-xs" />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                    <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">T99</div>
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-base font-bold text-foreground font-serif">Lab Alumni</h3>
+                      <Button size="xs" variant="outline" onClick={handleAlumniAdd}>
+                        <Plus className="h-3 w-3" /> Add Alumni
+                      </Button>
+                    </div>
+                    <div className="space-y-2">
+                      {(content.team.alumni.members ?? []).map((alum: any, idx: number) => (
+                        <div key={`alum-${idx}`} className="rounded border border-border bg-muted/30 p-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-mono text-[10px] uppercase text-muted-foreground">{alum.name || `Alumni ${idx + 1}`}</span>
+                            <Button size="xs" variant="ghost" onClick={() => handleAlumniRemove(idx)}>
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          </div>
+                          <div className="grid grid-cols-2 gap-2">
+                            <Input value={alum.name ?? ""} onChange={(e) => handleAlumniChange(idx, "name", e.target.value)} placeholder="Name" className="font-mono text-xs" />
+                            <Input value={alum.role ?? ""} onChange={(e) => handleAlumniChange(idx, "role", e.target.value)} placeholder="Role (e.g. PhD)" className="font-mono text-xs" />
+                          </div>
+                          <div className="grid grid-cols-2 gap-2">
+                            <Input value={alum.currentPosition ?? ""} onChange={(e) => handleAlumniChange(idx, "currentPosition", e.target.value)} placeholder="Current position" className="font-mono text-xs" />
+                            <Input value={alum.currentAffiliation ?? ""} onChange={(e) => handleAlumniChange(idx, "currentAffiliation", e.target.value)} placeholder="Current affiliation" className="font-mono text-xs" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "publications" && content?.publications && (
+                <div className="space-y-6">
+                  <div className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                    <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">P01</div>
+                    <h3 className="text-base font-bold text-foreground font-serif">Publications Header</h3>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Eyebrow</Label>
+                      <Input value={content.publications.pageEyebrow} onChange={(e) => handleFieldChange("publications", "pageEyebrow", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Headline</Label>
+                      <Input value={content.publications.pageHeadline} onChange={(e) => handleFieldChange("publications", "pageHeadline", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                  </div>
+
+                  <div className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                    <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">P02</div>
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-base font-bold text-foreground font-serif">Books</h3>
+                      <Button size="xs" variant="outline" onClick={handleBookAdd}>
+                        <Plus className="h-3 w-3" /> Add Book
+                      </Button>
+                    </div>
+                    {(content.publications.books ?? []).map((book: any, idx: number) => (
+                      <div key={`book-${idx}`} className="rounded border border-border bg-muted/30 p-4 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="font-mono text-[10px] uppercase text-muted-foreground">{book.title || `Book ${idx + 1}`}</span>
+                          <Button size="xs" variant="ghost" onClick={() => handleBookRemove(idx)}>
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <Input value={book.title ?? ""} onChange={(e) => handleBookChange(idx, "title", e.target.value)} placeholder="Title" className="font-mono text-xs" />
+                          <Input value={book.authors ?? ""} onChange={(e) => handleBookChange(idx, "authors", e.target.value)} placeholder="Authors" className="font-mono text-xs" />
+                        </div>
+                        <div className="grid grid-cols-3 gap-2">
+                          <Input value={book.year ?? ""} onChange={(e) => handleBookChange(idx, "year", e.target.value)} placeholder="Year" className="font-mono text-xs" />
+                          <Input value={book.url ?? ""} onChange={(e) => handleBookChange(idx, "url", e.target.value)} placeholder="URL" className="font-mono text-xs col-span-2" />
+                        </div>
+                        <Input value={book.coverImagePath ?? ""} onChange={(e) => handleBookChange(idx, "coverImagePath", e.target.value)} placeholder="Cover image path (/public/...)" className="font-mono text-xs" />
+                        <textarea rows={2} value={book.description ?? ""} onChange={(e) => handleBookChange(idx, "description", e.target.value)} placeholder="Description" className="w-full text-xs p-2 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed" />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                    <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">P03</div>
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-base font-bold text-foreground font-serif">Year-grouped Publications</h3>
+                      <Button size="xs" variant="outline" onClick={handleYearAdd}>
+                        <Plus className="h-3 w-3" /> Add Year
+                      </Button>
+                    </div>
+
+                    {Object.keys(content.publications.years ?? {}).sort((a, b) => (a < b ? 1 : -1)).map((year) => (
+                      <div key={`year-${year}`} className="rounded border border-border bg-muted/30 p-4 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="font-mono text-[10px] uppercase text-muted-foreground">{year}</span>
+                          <Button size="xs" variant="ghost" onClick={() => handleYearRemove(year)}>
+                            <Trash2 className="h-3 w-3" /> Remove year
+                          </Button>
+                        </div>
+                        {(["journalArticles", "conferenceProceedings", "extendedAbstracts", "researchArtifacts"] as const).map((kind) => (
+                          <div key={`${year}-${kind}`} className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="font-mono text-[10px] uppercase text-muted-foreground">{kind}</span>
+                              <Button size="xs" variant="ghost" onClick={() => handlePubAdd(year, kind)}>
+                                <Plus className="h-3 w-3" /> Add
+                              </Button>
+                            </div>
+                            {((content.publications.years[year] ?? {})[kind] ?? []).map((entry: any, idx: number) => (
+                              <div key={`${year}-${kind}-${idx}`} className="rounded border border-border bg-card p-3 space-y-2">
+                                <div className="flex items-center justify-between">
+                                  <span className="font-mono text-[10px] text-muted-foreground">{entry.title || `Entry ${idx + 1}`}</span>
+                                  <Button size="xs" variant="ghost" onClick={() => handlePubRemove(year, kind, idx)}>
+                                    <Trash2 className="h-3 w-3" />
+                                  </Button>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <Input value={entry.authors ?? ""} onChange={(e) => handlePubChange(year, kind, idx, "authors", e.target.value)} placeholder="Authors" className="font-mono text-xs" />
+                                  <Input value={entry.title ?? ""} onChange={(e) => handlePubChange(year, kind, idx, "title", e.target.value)} placeholder="Title" className="font-mono text-xs" />
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                  <Input value={entry.venue ?? ""} onChange={(e) => handlePubChange(year, kind, idx, "venue", e.target.value)} placeholder="Venue" className="font-mono text-xs" />
+                                  <Input value={entry.url ?? ""} onChange={(e) => handlePubChange(year, kind, idx, "url", e.target.value)} placeholder="URL" className="font-mono text-xs" />
+                                </div>
+                                <div className="grid grid-cols-3 gap-2">
+                                  <Input value={entry.doi ?? ""} onChange={(e) => handlePubChange(year, kind, idx, "doi", e.target.value)} placeholder="DOI" className="font-mono text-xs" />
+                                  <Input value={entry.pages ?? ""} onChange={(e) => handlePubChange(year, kind, idx, "pages", e.target.value)} placeholder="Pages" className="font-mono text-xs" />
+                                  <Input value={entry.articleNumber ?? ""} onChange={(e) => handlePubChange(year, kind, idx, "articleNumber", e.target.value)} placeholder="Article #" className="font-mono text-xs" />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "aboutPage" && content?.aboutPage && (
+                <div className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                  <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">B01</div>
+                  <h3 className="text-base font-bold text-foreground font-serif">About Page</h3>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Eyebrow</Label>
+                    <Input value={content.aboutPage.eyebrow ?? ""} onChange={(e) => handleFieldChange("aboutPage", "eyebrow", e.target.value)} className="font-mono text-xs" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Headline</Label>
+                    <Input value={content.aboutPage.headline ?? ""} onChange={(e) => handleFieldChange("aboutPage", "headline", e.target.value)} className="font-mono text-xs" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Subhead</Label>
+                    <textarea rows={3} value={content.aboutPage.subhead ?? ""} onChange={(e) => handleFieldChange("aboutPage", "subhead", e.target.value)} className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Mission Title</Label>
+                      <Input value={content.aboutPage.missionTitle ?? ""} onChange={(e) => handleFieldChange("aboutPage", "missionTitle", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Approach Title</Label>
+                      <Input value={content.aboutPage.approachTitle ?? ""} onChange={(e) => handleFieldChange("aboutPage", "approachTitle", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Mission Body</Label>
+                    <textarea rows={4} value={content.aboutPage.missionBody ?? ""} onChange={(e) => handleFieldChange("aboutPage", "missionBody", e.target.value)} className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Approach Body</Label>
+                    <textarea rows={4} value={content.aboutPage.approachBody ?? ""} onChange={(e) => handleFieldChange("aboutPage", "approachBody", e.target.value)} className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Story Title</Label>
+                    <Input value={content.aboutPage.storyTitle ?? ""} onChange={(e) => handleFieldChange("aboutPage", "storyTitle", e.target.value)} className="font-mono text-xs" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Story Body</Label>
+                    <textarea rows={5} value={content.aboutPage.storyBody ?? ""} onChange={(e) => handleFieldChange("aboutPage", "storyBody", e.target.value)} className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Approach Items</Label>
+                      <Button size="xs" variant="ghost" onClick={handleApproachItemAdd}>
+                        <Plus className="h-3 w-3" /> Add
+                      </Button>
+                    </div>
+                    {(content.aboutPage.approachItems ?? []).map((item: any, idx: number) => (
+                      <div key={`approach-${idx}`} className="rounded border border-border bg-muted/30 p-3 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="font-mono text-[10px] uppercase text-muted-foreground">{item.title || `Item ${idx + 1}`}</span>
+                          <Button size="xs" variant="ghost" onClick={() => handleApproachItemRemove(idx)}>
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                        <Input value={item.title ?? ""} onChange={(e) => handleApproachItemChange(idx, "title", e.target.value)} placeholder="Title" className="font-mono text-xs" />
+                        <textarea rows={2} value={item.body ?? ""} onChange={(e) => handleApproachItemChange(idx, "body", e.target.value)} placeholder="Body" className="w-full text-xs p-2 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "contact" && content?.contact && (
+                <div className="relative bg-card border border-border rounded p-6 shadow-sm space-y-4">
+                  <div className="absolute top-0 right-0 w-8 h-8 flex items-center justify-center border-b border-l border-border bg-muted font-mono text-[9px] text-muted-foreground">C01</div>
+                  <h3 className="text-base font-bold text-foreground font-serif">Contact Page</h3>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Eyebrow</Label>
+                    <Input value={content.contact.eyebrow ?? ""} onChange={(e) => handleFieldChange("contact", "eyebrow", e.target.value)} className="font-mono text-xs" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Headline</Label>
+                    <Input value={content.contact.headline ?? ""} onChange={(e) => handleFieldChange("contact", "headline", e.target.value)} className="font-mono text-xs" />
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Body</Label>
+                    <textarea rows={3} value={content.contact.body ?? ""} onChange={(e) => handleFieldChange("contact", "body", e.target.value)} className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Email Label</Label>
+                      <Input value={content.contact.emailLabel ?? ""} onChange={(e) => handleFieldChange("contact", "emailLabel", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] font-mono uppercase text-muted-foreground">Connect Title</Label>
+                      <Input value={content.contact.connectTitle ?? ""} onChange={(e) => handleFieldChange("contact", "connectTitle", e.target.value)} className="font-mono text-xs" />
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-[10px] font-mono uppercase text-muted-foreground">Connect Body</Label>
+                    <textarea rows={4} value={content.contact.connectBody ?? ""} onChange={(e) => handleFieldChange("contact", "connectBody", e.target.value)} className="w-full text-xs p-3 rounded border border-input bg-background text-foreground focus:outline-none focus:border-ring font-sans leading-relaxed" />
                   </div>
                 </div>
               )}

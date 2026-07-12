@@ -9,7 +9,11 @@
     "brandTagline": "UofT",
     "brandLogoAlt": "University of Toronto",
     "links": [
-      { "label": "Home", "href": "/" }
+      { "label": "Home", "href": "/" },
+      { "label": "Team", "href": "/team" },
+      { "label": "Publications", "href": "/publications" },
+      { "label": "About", "href": "/about" },
+      { "label": "Contact", "href": "/contact" }
     ]
   },
   "hero": {
@@ -78,7 +82,7 @@
     "institution": "University of Toronto",
     "role": "National AI Consultant, UNDP Bangladesh",
     "website": "https://www.ishtiaque.net/",
-    "imagePath": "/ishtique-ahmed.png"
+    "imagePath": "/headshots/ishtique-ahmed.png"
   },
   "researchDomains": {
     "sectionLabel": "Research Domains",
@@ -123,7 +127,9 @@
   },
   "about": {
     "title": "About the Group",
-    "body": "Through empirical and design-oriented research, the group develops and studies socio-technical systems that support more responsible, participatory, and context-aware forms of AI and digital technologies. Their work is grounded in collaboration with communities and draws on interdisciplinary perspectives to reimagine how computing systems can better serve diverse human values and needs."
+    "body": "Through empirical and design-oriented research, the group develops and studies socio-technical systems that support more responsible, participatory, and context-aware forms of AI and digital technologies. Their work is grounded in collaboration with communities and draws on interdisciplinary perspectives to reimagine how computing systems can better serve diverse human values and needs.",
+    "ctaLabel": "Read full story",
+    "ctaHref": "/about"
   },
   "pillars": [
     {
@@ -198,5 +204,83 @@
     "tagline": "UofT",
     "copyrightSuffix": "— University of Toronto.",
     "footerDescription": "Through empirical and design-oriented research, the group develops and studies socio-technical systems that support more responsible, participatory, and context-aware forms of AI and digital technologies. Led by Prof. Ishtiaque Ahmed at the University of Toronto."
+  },
+  "team": {
+    "pageTitle": "Team — Thirdspace | University of Toronto",
+    "pageEyebrow": "Our people",
+    "pageHeadline": "Researchers, students, and collaborators.",
+    "pageBody": "The Thirdspace group brings together faculty, postdocs, graduate students, and undergraduates who study the social, ethical, and political dimensions of computing and AI.",
+    "sections": [
+      {
+        "role": "Postdoctoral Fellow",
+        "members": []
+      },
+      {
+        "role": "PhD Students",
+        "members": []
+      },
+      {
+        "role": "MSc Students",
+        "members": []
+      },
+      {
+        "role": "Undergraduate Students",
+        "members": []
+      },
+      {
+        "role": "Collaborators",
+        "members": []
+      },
+      {
+        "role": "Research Staff",
+        "members": []
+      }
+    ],
+    "alumni": {
+      "title": "Lab Alumni",
+      "members": []
+    }
+  },
+  "publications": {
+    "pageTitle": "Publications — Thirdspace | University of Toronto",
+    "pageEyebrow": "Publications",
+    "pageHeadline": "Books, journal articles, and conference proceedings.",
+    "books": [],
+    "years": {}
+  },
+  "aboutPage": {
+    "pageTitle": "About — Thirdspace | University of Toronto",
+    "eyebrow": "About the group",
+    "headline": "Studying computing from the margins inward.",
+    "subhead": "Founded and led by Prof. Ishtiaque Ahmed at the University of Toronto, Thirdspace is a research group that studies the social, ethical, and political dimensions of computing and artificial intelligence.",
+    "missionTitle": "Our mission",
+    "missionBody": "Through empirical and design-oriented research, we develop and study socio-technical systems that support more responsible, participatory, and context-aware forms of AI and digital technologies — particularly with communities too often left outside the room where technology is designed.",
+    "approachTitle": "How we work",
+    "approachBody": "We blend long-term fieldwork with iterative system design, partnering with community organizations, public institutions, and grassroots groups in the Global South and at the Canadian margins. Our methods combine ethnography, interviews, co-design workshops, and the building of working prototypes.",
+    "approachItems": [
+      {
+        "title": "Empirical inquiry",
+        "body": "Ethnography, interviews, and field studies grounded in everyday life practices."
+      },
+      {
+        "title": "Participatory design",
+        "body": "Co-design with communities as collaborators — not subjects — of the technologies we build."
+      },
+      {
+        "title": "Critical computing",
+        "body": "Questioning the political, ethical, and social stakes of AI and digital infrastructure."
+      }
+    ],
+    "storyTitle": "Our story",
+    "storyBody": "Thirdspace sits at the intersection of human-computer interaction, AI, and critical computing. The group is housed in the Department of Computer Science at the University of Toronto and is affiliated with several cross-disciplinary labs and initiatives across the university. Our work has been supported by the Social Sciences and Humanities Research Council of Canada (SSHRC), the National Sciences and Engineering Research Council of Canada (NSERC), the Canadian Institute for Advanced Research (CIFAR), and partner organizations across the Global South."
+  },
+  "contact": {
+    "pageTitle": "Contact — Thirdspace | University of Toronto",
+    "eyebrow": "Get in touch",
+    "headline": "We'd love to hear from you.",
+    "body": "Whether you're a prospective student, collaborator, journalist, or community partner — please reach out. We aim to respond within a few working days.",
+    "emailLabel": "General inquiries",
+    "connectTitle": "Working with us",
+    "connectBody": "We welcome inquiries from prospective graduate students, visiting researchers, and community partners. Due to the volume of requests, we may not be able to reply to every message, but we read each one. For graduate admissions, please apply through the University of Toronto's Department of Computer Science and mention Prof. Ahmed's group in your statement of interest."
   }
 }
